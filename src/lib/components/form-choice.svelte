@@ -114,7 +114,7 @@
 		&::before {
 			width: 0.9em;
 			height: 0.9em;
-			background: var(--color-text);
+			background: var(--color-on-accent);
 			mask: url('/icons/check.svg') center / contain no-repeat;
 		}
 

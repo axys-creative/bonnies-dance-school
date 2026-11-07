@@ -1,0 +1,18 @@
+{
+	"title": "Location",
+	"eyebrowText": "Find us",
+	"description": "Bonnie’s Dance School is located in West Jordan, Utah. It’s a cozy home studio where every dancer feels welcome.",
+	"image": {
+		"src": "/images/sample-dance-landscape-3.jpg",
+		"alt": ""
+	},
+	"cta": {
+		"primary": {
+			"text": "View on Google Maps",
+			"textDescription": "View Bonnie’s Dance School on Google Maps",
+			"url": "https://www.google.com/maps/search/?api=1&query=5372+Harvestmill+Dr.%2C+West+Jordan%2C+UT+84081",
+			"newTab": true,
+			"iconEnd": ""
+		}
+	}
+}

@@ -1351,6 +1351,23 @@ export const headlineJumbledProps = props(
 	['class', 'A string of extra classes, such as `full` on a Library page.']
 );
 
+export const cardsThreeProps = props(
+	[
+		'title, eyebrowText, eyebrowIcon',
+		'The opening copy, from Section Copy (see the Style Guide). The title is an H2.'
+	],
+	[
+		'cards',
+		'An array of up to three `{ title, description }`. The title is an H3 and the description takes Rich Text tokens. Side by side from `md`, stacked below. Required.'
+	],
+	[
+		'fullScreen',
+		'A boolean. At least the height of the screen, with the content centered. Taller content still grows past it. Defaults to `false`.'
+	],
+	['static', 'A boolean. Skips the entrance animation, for the CMS preview. Defaults to `false`.'],
+	['class', 'A string of extra classes, such as `full` on a Library page.']
+);
+
 export const planSelectionProps = props(
 	[
 		'title, description, eyebrowText, eyebrowIcon',
@@ -1492,7 +1509,7 @@ export const heroLoadMarqueeSlideProps = props(
 	],
 	[
 		'size',
-		'A string, any CSS length for the font size of the words. Defaults to `clamp(56px, 12vw, 150px)`.'
+		'A string, any CSS length for the font size of the words. Defaults to `clamp(48px, 9.5vw, 120px)`.'
 	],
 	[
 		'divider',

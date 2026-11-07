@@ -60,7 +60,7 @@
 
 	<div class="bar" bind:this={bar} {@attach themeFollow()}>
 		<div class="wide">
-			<MenuLinks links={pages} label="Main" type="text" />
+			<MenuLinks links={pages} label="Main" type="underline" />
 			{#each ctas.slice(0, 1) as cta (`${cta.url}|${cta.text}`)}
 				<Button {...cta} iconEnd={cta.iconEnd || 'arrow-tr'} type="solid" {@attach roll()} />
 			{/each}
@@ -123,7 +123,7 @@
 		pointer-events: auto;
 
 		@include mixins.min-lg {
-			--logo-height: 56px;
+			--logo-height: 48px;
 		}
 	}
 
@@ -148,7 +148,11 @@
 		}
 
 		:global(.menu-links) {
-			gap: 2ch;
+			gap: 4ch;
+		}
+
+		:global(.menu-links li) {
+			display: flex;
 		}
 	}
 

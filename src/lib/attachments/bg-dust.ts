@@ -509,7 +509,7 @@ export function bgDust(options: BgDustOptions = {}): Attachment<HTMLElement> {
 		const siteTheme = (): 'dark' | 'light' => {
 			const set = document.documentElement.dataset.theme;
 			if (set === 'light' || set === 'dark') return set;
-			return matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+			return 'light';
 		};
 		const sectionTheme = (): 'dark' | 'light' => {
 			let active: 'dark' | 'light' = 'dark';
@@ -689,12 +689,7 @@ export function bgDust(options: BgDustOptions = {}): Attachment<HTMLElement> {
 				attributes: true,
 				attributeFilter: ['data-theme']
 			});
-			const query = matchMedia('(prefers-color-scheme: light)');
-			query.addEventListener('change', refreshTheme);
-			cleanups.push(() => {
-				watcher.disconnect();
-				query.removeEventListener('change', refreshTheme);
-			});
+			cleanups.push(() => watcher.disconnect());
 			if (config.sections) {
 				let queued = false;
 				const onScroll = () => {

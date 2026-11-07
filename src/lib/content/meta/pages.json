@@ -15,6 +15,20 @@
 			"crawlPage": true
 		},
 		{
+			"path": "/contact",
+			"title": "Contact",
+			"description": "Contact Bonnie’s Dance School about classes, schedules and joining the studio.",
+			"ogImage": "",
+			"crawlPage": true
+		},
+		{
+			"path": "/join",
+			"title": "Join a class",
+			"description": "Register for a class at Bonnie’s Dance School.",
+			"ogImage": "",
+			"crawlPage": true
+		},
+		{
 			"path": "/blog",
 			"title": "Blog",
 			"description": "News, tips and stories from Bonnie’s Dance School.",

@@ -327,6 +327,208 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "cards_three",
+					"label": "Vision, goals and commitment",
+					"file": "src/lib/content/page_home/cards-three.json",
+					"preview_path": "#vision",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "cards",
+							"label": "Cards",
+							"widget": "list",
+							"min": 1,
+							"max": 3,
+							"summary": "{{fields.title}}",
+							"fields": [
+								{
+									"name": "icon",
+									"label": "Icon",
+									"widget": "image",
+									"required": false,
+									"hint": "An SVG. It is drawn in the text color."
+								},
+								{
+									"name": "title",
+									"label": "Title",
+									"widget": "string"
+								},
+								{
+									"name": "description",
+									"label": "Copy",
+									"widget": "text",
+									"required": false,
+									"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "location",
+					"label": "Location",
+					"file": "src/lib/content/page_home/location.json",
+					"preview_path": "#location",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
+							"required": false
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "image",
+							"label": "Image",
+							"widget": "object",
+							"required": false,
+							"fields": [
+								{
+									"name": "src",
+									"label": "Image",
+									"widget": "image"
+								},
+								{
+									"name": "alt",
+									"label": "Alt text",
+									"widget": "string",
+									"required": false,
+									"hint": "Describe the picture for screen readers. Leave empty if it is only decoration."
+								}
+							]
+						},
+						{
+							"name": "cta",
+							"label": "Button",
+							"widget": "object",
+							"fields": [
+								{
+									"name": "primary",
+									"label": "Primary button",
+									"widget": "object",
+									"required": false,
+									"fields": [
+										{
+											"name": "text",
+											"label": "Text",
+											"widget": "string",
+											"required": true
+										},
+										{
+											"name": "textDescription",
+											"label": "Accessible description",
+											"widget": "string",
+											"required": false,
+											"hint": "Optional aria-label for screen readers"
+										},
+										{
+											"name": "url",
+											"label": "URL",
+											"widget": "string",
+											"required": true
+										},
+										{
+											"name": "newTab",
+											"label": "Open in new tab",
+											"widget": "boolean",
+											"default": false,
+											"required": false
+										},
+										{
+											"name": "iconEnd",
+											"label": "Icon after text",
+											"widget": "string",
+											"required": false,
+											"hint": "Icon file name without .svg (e.g. chevron-right). See /style-guide for examples."
+										}
+									]
+								}
+							],
+							"required": false
+						}
+					]
+				},
+				{
+					"name": "marquee_testimonials",
+					"label": "Recent reviews",
+					"file": "src/lib/content/page_home/marquee-testimonials.json",
+					"preview_path": "#reviews",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "cta",
+							"label": "Button",
+							"widget": "object",
+							"fields": [
+								{
+									"name": "primary",
+									"label": "Primary button",
+									"widget": "object",
+									"required": false,
+									"fields": [
+										{
+											"name": "text",
+											"label": "Text",
+											"widget": "string",
+											"required": true
+										},
+										{
+											"name": "textDescription",
+											"label": "Accessible description",
+											"widget": "string",
+											"required": false,
+											"hint": "Optional aria-label for screen readers"
+										},
+										{
+											"name": "url",
+											"label": "URL",
+											"widget": "string",
+											"required": true
+										},
+										{
+											"name": "newTab",
+											"label": "Open in new tab",
+											"widget": "boolean",
+											"default": false,
+											"required": false
+										},
+										{
+											"name": "iconEnd",
+											"label": "Icon after text",
+											"widget": "string",
+											"required": false,
+											"hint": "Icon file name without .svg (e.g. chevron-right). See /style-guide for examples."
+										}
+									]
+								}
+							],
+							"required": false
+						}
+					]
 				}
 			]
 		},
@@ -406,6 +608,168 @@
 							"widget": "text",
 							"required": false,
 							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				},
+				{
+					"name": "testimonials_grid",
+					"label": "All reviews",
+					"file": "src/lib/content/page_about/testimonials-grid.json",
+					"preview_path": "about#reviews",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "page_contact",
+			"label": "Page - Contact",
+			"files": [
+				{
+					"name": "hero_about",
+					"label": "Hero",
+					"file": "src/lib/content/page_contact/hero-about.json",
+					"preview_path": "contact#hero",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
+							"required": false
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "page_join",
+			"label": "Page - Join",
+			"files": [
+				{
+					"name": "hero_about",
+					"label": "Hero",
+					"file": "src/lib/content/page_join/hero-about.json",
+					"preview_path": "join#hero",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
+							"required": false
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				},
+				{
+					"name": "registration_form",
+					"label": "Registration form",
+					"file": "src/lib/content/page_join/registration-form.json",
+					"preview_path": "join#registration",
+					"fields": [
+						{
+							"name": "tuition",
+							"label": "Tuition",
+							"widget": "object",
+							"fields": [
+								{
+									"name": "items",
+									"label": "Fees",
+									"widget": "list",
+									"label_singular": "Fee",
+									"summary": "{{fields.label}} {{fields.value}}",
+									"fields": [
+										{
+											"name": "label",
+											"label": "Label",
+											"widget": "string"
+										},
+										{
+											"name": "value",
+											"label": "Amount",
+											"widget": "string"
+										},
+										{
+											"name": "note",
+											"label": "Note",
+											"widget": "text",
+											"required": false
+										}
+									]
+								},
+								{
+									"name": "footnote",
+									"label": "Footnote",
+									"widget": "text",
+									"required": false
+								}
+							]
+						},
+						{
+							"name": "steps",
+							"label": "Step names",
+							"widget": "list",
+							"min": 3,
+							"max": 3,
+							"field": {
+								"name": "step",
+								"label": "Name",
+								"widget": "string"
+							},
+							"hint": "Exactly three, in order: the students, the family, and the policies."
+						},
+						{
+							"name": "policies",
+							"label": "Policies",
+							"widget": "list",
+							"label_singular": "Policy",
+							"hint": "One per paragraph, shown in the last step.",
+							"field": {
+								"name": "policy",
+								"label": "Policy",
+								"widget": "text"
+							}
+						},
+						{
+							"name": "agreement",
+							"label": "Agreement sentence",
+							"widget": "string",
+							"hint": "The sentence the visitor ticks a box to agree to."
+						},
+						{
+							"name": "submitText",
+							"label": "Submit button",
+							"widget": "string"
 						}
 					]
 				}
@@ -1577,13 +1941,6 @@
 							"required": false
 						},
 						{
-							"name": "showThemeToggle",
-							"label": "Show theme toggle",
-							"widget": "boolean",
-							"default": true,
-							"required": false
-						},
-						{
 							"name": "menu",
 							"label": "Menu column",
 							"widget": "object",
@@ -1655,6 +2012,13 @@
 									"label": "Phone",
 									"widget": "string",
 									"required": false
+								},
+								{
+									"name": "address",
+									"label": "Address",
+									"widget": "string",
+									"required": false,
+									"hint": "Links to the address on Google Maps."
 								}
 							]
 						},
@@ -1838,13 +2202,6 @@
 									"required": false
 								}
 							]
-						},
-						{
-							"name": "showThemeToggle",
-							"label": "Show theme toggle",
-							"widget": "boolean",
-							"default": true,
-							"required": false
 						},
 						{
 							"name": "copyright",
@@ -2118,6 +2475,61 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "reviews",
+					"label": "Reviews",
+					"file": "src/lib/content/global/reviews.json",
+					"fields": [
+						{
+							"name": "reviews",
+							"label": "Reviews",
+							"widget": "list",
+							"label_singular": "Review",
+							"summary": "{{fields.name}}",
+							"hint": "Shown in the Recent reviews marquee on the home page (the first six) and in the All reviews grid on the About page. Newest first.",
+							"fields": [
+								{
+									"name": "quote",
+									"label": "Review",
+									"widget": "text",
+									"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+								},
+								{
+									"name": "name",
+									"label": "Name",
+									"widget": "string"
+								},
+								{
+									"name": "role",
+									"label": "Tag",
+									"widget": "string",
+									"required": false,
+									"hint": "Shown as a tag beside the name, such as Parent or Student."
+								},
+								{
+									"name": "image",
+									"label": "Photo",
+									"widget": "object",
+									"required": false,
+									"fields": [
+										{
+											"name": "src",
+											"label": "Image",
+											"widget": "image"
+										},
+										{
+											"name": "alt",
+											"label": "Alt text",
+											"widget": "string",
+											"required": false,
+											"hint": "Leave empty if it is only decoration."
+										}
+									]
+								}
+							]
+						}
+					]
 				}
 			]
 		},
@@ -2208,6 +2620,46 @@
 							"widget": "string",
 							"required": false,
 							"hint": "Added to the site's structured data (rich results)."
+						},
+						{
+							"name": "phone",
+							"label": "Phone",
+							"widget": "string",
+							"required": false,
+							"hint": "Added to the site's structured data (rich results)."
+						},
+						{
+							"name": "address",
+							"label": "Address",
+							"widget": "object",
+							"required": false,
+							"collapsed": true,
+							"fields": [
+								{
+									"name": "street",
+									"label": "Street",
+									"widget": "string",
+									"required": false
+								},
+								{
+									"name": "city",
+									"label": "City",
+									"widget": "string",
+									"required": false
+								},
+								{
+									"name": "region",
+									"label": "State",
+									"widget": "string",
+									"required": false
+								},
+								{
+									"name": "postalCode",
+									"label": "ZIP code",
+									"widget": "string",
+									"required": false
+								}
+							]
 						},
 						{
 							"name": "themeColor",

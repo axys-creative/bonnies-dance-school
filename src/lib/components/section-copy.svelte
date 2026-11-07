@@ -11,8 +11,12 @@
 		/** A status dot before the eyebrow. `true` is `pulse`. */
 		eyebrowDot?: boolean | 'pulse' | 'sonar';
 		title?: string;
-		/** An attachment for the title heading, e.g. `textIntro()`. */
+		/** An attachment for the title heading, e.g. `textIntro()`. An H2 reveals with `headingReveal()` unless this is set. */
 		titleAttach?: Attachment<HTMLElement>;
+		/** Skips the H2's scroll reveal, for the CMS preview. */
+		still?: boolean;
+		/** The `titleAttach` is a `headingReveal()`: the title stays hidden until it is ready, so it does not flash. */
+		titleReveal?: boolean;
 		/** Heading level of the title. A page's hero is 1, other sections are 2. */
 		level?: 1 | 2 | 3 | 4 | 5 | 6;
 		/** Looks like another heading size without changing the level. */
@@ -35,6 +39,7 @@
 </script>
 
 <script lang="ts">
+	import { headingReveal } from '$lib/attachments/text-reveal';
 	import Eyebrow from './eyebrow.svelte';
 	import CtaGroupComponent from './cta-group.svelte';
 	import RichText from './rich-text.svelte';
@@ -46,6 +51,8 @@
 		eyebrowDot = false,
 		title,
 		titleAttach,
+		still = false,
+		titleReveal = false,
 		level = 2,
 		titleStyle,
 		description,
@@ -79,7 +86,12 @@
 					/>
 				{/if}
 				{#if hasTitle}
-					<svelte:element this={`h${level}`} class={titleStyle} {@attach titleAttach}
+					<svelte:element
+						this={`h${level}`}
+						class={titleStyle}
+						data-reveal={titleReveal || (!titleAttach && level === 2 && !still) ? '' : undefined}
+						{@attach titleAttach ??
+							(level === 2 && !still ? headingReveal({ delay: 0, once: false }) : undefined)}
 						><RichText text={title ?? ''} /></svelte:element
 					>
 				{/if}

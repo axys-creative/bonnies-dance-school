@@ -12,7 +12,6 @@
 		/** A large link beside the title, such as an email address. */
 		bigLink?: Pick<ButtonProps, 'text' | 'textDescription' | 'url' | 'newTab'>;
 		socialLinks?: SocialLink[];
-		showThemeToggle?: boolean;
 		copyright?: string;
 		/** A credit line, such as "Made in collaboration with axys creative". */
 		credit?: { text: string; linkText: string; url: string };
@@ -30,7 +29,6 @@
 	import Button from './button.svelte';
 	import CtaGroupComponent from './cta-group.svelte';
 	import SocialLinks from './social-links.svelte';
-	import ThemeToggle from './theme-toggle.svelte';
 
 	let {
 		title,
@@ -38,7 +36,6 @@
 		message,
 		bigLink,
 		socialLinks = [],
-		showThemeToggle = false,
 		copyright,
 		credit,
 		parallax = true,
@@ -134,7 +131,6 @@
 						</p>
 					{/if}
 					<SocialLinks links={socialLinks} />
-					{#if showThemeToggle}<ThemeToggle />{/if}
 				</div>
 			</div>
 		</div>

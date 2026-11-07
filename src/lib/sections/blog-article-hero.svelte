@@ -6,6 +6,7 @@
 
 <script lang="ts">
 	import { imageProps } from '$lib/utils/image';
+	import { headingReveal } from '$lib/attachments/text-reveal';
 	import { parallax } from '$lib/attachments/parallax';
 	import Tag from '$lib/components/tag.svelte';
 	import { formatDate } from '$lib/utils/collection';
@@ -29,7 +30,7 @@
 				<time datetime={date}>{formatDate(date)}</time>
 				{#if author}<span>by {author}</span>{/if}
 			</p>
-			<h1>{title}</h1>
+			<h1 data-reveal {@attach headingReveal()}>{title}</h1>
 		</div>
 
 		{#if description}<p class="description">{description}</p>{/if}

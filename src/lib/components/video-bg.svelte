@@ -13,15 +13,17 @@
 		/** Which corner holds the play / pause button. */
 		placement?: 'br' | 'bl' | 'tr' | 'tl';
 		/** An attachment for the button, such as `magnet()`. */
-		toggleAttach?: Attachment<HTMLButtonElement>;
+		toggleAttach?: Attachment<HTMLElement>;
 		/** The video's accessible name. */
 		title?: string;
+		/** Called with `true` or `false` when the visitor presses the button to pause or play. */
+		ontoggle?: (paused: boolean) => void;
 	};
 </script>
 
 <script lang="ts">
 	import { isHls, videoPoster, videoUrl } from '$lib/utils/video-url';
-	import Icon from './icon.svelte';
+	import Button from './button.svelte';
 
 	let {
 		src,
@@ -30,7 +32,8 @@
 		shadow = 'bottom',
 		placement = 'br',
 		toggleAttach,
-		title = 'Background video'
+		title = 'Background video',
+		ontoggle
 	}: VideoBgProps = $props();
 
 	const url = $derived(videoUrl(src));
@@ -67,7 +70,13 @@
 		};
 	});
 
-	const toggle = () => (video?.paused ? video.play().catch(() => {}) : video?.pause());
+	const toggle = () => {
+		if (!video) return;
+		const pause = !video.paused;
+		if (pause) video.pause();
+		else video.play().catch(() => {});
+		ontoggle?.(pause);
+	};
 
 	// Starts it here rather than trusting the `autoplay` attribute, which browsers skip when it is set after the
 	// element is created.
@@ -95,16 +104,15 @@
 	></video>
 </figure>
 
-<button
-	type="button"
+<Button
 	class="toggle {placement}"
-	aria-label="{paused ? 'Play' : 'Pause'} background video"
+	type="solid"
+	tone="tertiary"
+	textDescription="{paused ? 'Play' : 'Pause'} background video"
+	iconStart={paused ? 'play' : 'pause'}
 	onclick={toggle}
 	{@attach toggleAttach}
->
-	<Icon name="play" class="play" />
-	<Icon name="pause" class="pause" />
-</button>
+/>
 
 <style lang="scss">
 	@use 'base/mixins';
@@ -149,84 +157,35 @@
 		object-fit: cover;
 	}
 
-	.toggle {
-		--size: 40px;
+	:global(.toggle) {
 		--gap: 24px;
 
 		position: absolute;
-		display: grid;
-		width: var(--size);
-		height: var(--size);
-		padding: 10px;
-		border: 1px solid var(--color-border);
-		border-radius: 50%;
-		cursor: pointer;
-
-		@include mixins.mq-motion-allow {
-			transition: scale 0.24s ease;
-		}
 
 		@include mixins.max-md {
 			--gap: 16px;
 		}
-
-		&:active {
-			scale: 0.9;
-		}
-
-		&:focus-visible {
-			outline: 2px solid var(--color-accent-text);
-			outline-offset: 3px;
-		}
 	}
 
-	.br {
+	:global(.toggle.br) {
 		bottom: var(--body-padding);
 
 		@include mixins.right-spacing;
 	}
 
-	.bl {
+	:global(.toggle.bl) {
 		bottom: var(--body-padding);
 
 		@include mixins.left-spacing;
 	}
 
-	.tr {
+	:global(.toggle.tr) {
 		top: var(--gap);
 		right: var(--gap);
 	}
 
-	.tl {
+	:global(.toggle.tl) {
 		top: var(--gap);
 		left: var(--gap);
-	}
-
-	// Shows the action a press will do: play while paused, pause while playing.
-	.toggle :global(.play),
-	.toggle :global(.pause) {
-		--icon-size: 100%;
-
-		grid-area: 1 / 1;
-		width: 100%;
-		height: 100%;
-
-		@include mixins.mq-motion-allow {
-			transition:
-				opacity 0.3s var(--ease),
-				scale 0.3s var(--ease);
-		}
-	}
-
-	.toggle :global(.pause),
-	.toggle[aria-label^='Play'] :global(.play) {
-		opacity: 1;
-		scale: 1;
-	}
-
-	.toggle[aria-label^='Play'] :global(.pause),
-	.toggle:not([aria-label^='Play']) :global(.play) {
-		opacity: 0;
-		scale: 0.5;
 	}
 </style>

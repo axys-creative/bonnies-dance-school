@@ -1,0 +1,12 @@
+{
+	"title": "Recent reviews",
+	"cta": {
+		"primary": {
+			"text": "View all reviews",
+			"textDescription": "Read all reviews of Bonnie’s Dance School",
+			"url": "/about#reviews",
+			"newTab": false,
+			"iconEnd": ""
+		}
+	}
+}

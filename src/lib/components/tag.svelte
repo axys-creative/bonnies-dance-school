@@ -41,7 +41,7 @@
 
 	.solid {
 		background: var(--color-accent);
-		color: var(--color-text);
+		color: var(--color-on-accent);
 	}
 
 	.outline {

@@ -1,22 +1,32 @@
 <script lang="ts">
+	import { headingReveal } from '$lib/attachments/text-reveal';
 	import SectionCopy, { type SectionCopyProps } from '$lib/components/section-copy.svelte';
 
 	let {
 		id,
 		compact = false,
 		fullScreen = true,
+		static: isStatic = false,
 		...props
 	}: SectionCopyProps & {
 		/** The section's anchor, so a link or the CMS preview can point to `#id`. */
 		id?: string;
 		compact?: boolean;
 		fullScreen?: boolean;
+		/** Skips the heading reveal, for the CMS preview. */
+		static?: boolean;
 	} = $props();
 </script>
 
 <section {id} class="hero-simple" class:compact class:full-screen={fullScreen && !compact}>
 	<div class="inner">
-		<SectionCopy level={1} align="center" {...props} />
+		<SectionCopy
+			level={1}
+			align="center"
+			titleAttach={isStatic ? undefined : headingReveal()}
+			titleReveal={!isStatic}
+			{...props}
+		/>
 	</div>
 </section>
 

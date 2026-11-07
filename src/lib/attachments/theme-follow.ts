@@ -4,7 +4,7 @@ import './theme-follow.scss';
 const themes = ['dark', 'light', 'invert'];
 const selector = themes.map((theme) => `.theme-${theme}`).join(', ');
 
-/** Takes the theme of the `theme-dark`, `theme-light` or `theme-invert` surface behind this element. */
+/** Takes the theme of the `theme-dark`, `theme-light` or `theme-invert` surface behind this element, and its `data-theme-tone`. */
 export function themeFollow(): Attachment<HTMLElement> {
 	return (el) => {
 		let frame = 0;
@@ -20,6 +20,10 @@ export function themeFollow(): Attachment<HTMLElement> {
 
 			if (theme) el.dataset.themeFollow = theme;
 			else delete el.dataset.themeFollow;
+
+			const tone = (surface as HTMLElement | null | undefined)?.dataset.themeTone;
+			if (tone) el.dataset.themeFollowTone = tone;
+			else delete el.dataset.themeFollowTone;
 		};
 
 		const schedule = () => {
@@ -35,6 +39,7 @@ export function themeFollow(): Attachment<HTMLElement> {
 			window.removeEventListener('resize', schedule);
 			cancelAnimationFrame(frame);
 			delete el.dataset.themeFollow;
+			delete el.dataset.themeFollowTone;
 		};
 	};
 }

@@ -23,8 +23,8 @@
 			| 'time'
 			| 'textarea'
 			| 'select';
-		/** `underline` is a line under the field; `outline` is a full border. */
-		variant?: 'underline' | 'outline';
+		/** `underline` is a line under the field; `outline` is a full border; `solid` is a filled, rounded box. */
+		variant?: 'underline' | 'outline' | 'solid';
 		required?: boolean;
 		disabled?: boolean;
 		/** Helper text under the field. */
@@ -289,6 +289,74 @@
 			padding-inline: 0.35em;
 			translate: 0 -50%;
 			background: var(--color-bg);
+		}
+	}
+
+	// Solid: a short filled box with rounded corners. The label rests inside it and moves up above it, outside the box.
+	.solid {
+		--height: 2.5em;
+		--label-room: 1.4em;
+
+		padding-block-start: var(--label-room);
+		font-size: 16px;
+
+		input,
+		textarea,
+		select {
+			border-color: transparent;
+			border-radius: var(--radius-btn);
+			background: var(--color-surface);
+
+			&:hover {
+				border-color: var(--color-border);
+			}
+
+			&:focus-visible {
+				border-color: var(--color-accent);
+			}
+
+			&[aria-invalid='true'] {
+				border-color: var(--color-error);
+			}
+		}
+
+		input,
+		select {
+			height: var(--height);
+			padding: 0 0.75em;
+			line-height: 1.2;
+		}
+
+		textarea {
+			padding: 0.65em 0.75em;
+		}
+
+		select {
+			padding-inline-end: 2.25em;
+		}
+
+		:global(.chevron) {
+			right: 0.75em;
+			bottom: calc((var(--height) - 1em) / 2);
+		}
+
+		label {
+			top: calc(var(--label-room) + (var(--height) - 1.2em) / 2);
+			left: 0.75em;
+		}
+
+		textarea ~ label {
+			top: calc(var(--label-room) + 0.65em);
+		}
+
+		input:focus ~ label,
+		input:not(:placeholder-shown) ~ label,
+		textarea:focus ~ label,
+		textarea:not(:placeholder-shown) ~ label,
+		&.floated label {
+			top: 0;
+			left: 0.1em;
+			font-size: 0.8em;
 		}
 	}
 

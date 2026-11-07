@@ -5,6 +5,8 @@
 		eyebrowIcon?: string;
 		/** Plain text; `[words]{.class}` styles words. */
 		description?: string;
+		/** `split` puts the eyebrow at the left and the description at the right. `stacked` puts the description under the eyebrow. */
+		layout?: 'split' | 'stacked';
 		class?: string;
 	};
 </script>
@@ -17,11 +19,12 @@
 		eyebrowText,
 		eyebrowIcon,
 		description,
+		layout = 'split',
 		class: className
 	}: EyebrowDescriptionProps = $props();
 </script>
 
-<div class="eyebrow-description {className ?? ''}">
+<div class="eyebrow-description {layout} {className ?? ''}">
 	<div class="eyebrow-slot"><Eyebrow text={eyebrowText} icon={eyebrowIcon} /></div>
 	{#if description}
 		<p class="description"><RichText text={description} /></p>
@@ -37,9 +40,15 @@
 		gap: 24px;
 		align-items: start;
 
-		@include mixins.min-md {
-			grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
-			gap: var(--body-padding);
+		&.split {
+			@include mixins.min-md {
+				grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
+				gap: var(--body-padding);
+			}
+		}
+
+		&.stacked {
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 

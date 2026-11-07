@@ -8,6 +8,8 @@
 		url?: string;
 		newTab?: boolean;
 		type?: 'solid' | 'outline' | 'underline' | 'text';
+		/** `secondary` and `tertiary` swap the accent color for the secondary (plum) or tertiary (tan) one, to set a button apart from the primary call to action. */
+		tone?: 'primary' | 'secondary' | 'tertiary';
 		htmlType?: 'button' | 'submit' | 'reset';
 		size?: 'sm' | 'md' | 'lg';
 		disabled?: boolean;
@@ -36,6 +38,7 @@
 		url,
 		newTab = false,
 		type = 'solid',
+		tone = 'primary',
 		htmlType = 'button',
 		size = 'md',
 		disabled = false,
@@ -57,7 +60,7 @@
 	const onCurrentPage = $derived(!newTab && isCurrentPage(url));
 	const isLink = $derived(type === 'text' || type === 'underline');
 	const classes = $derived(
-		`button ${type} ${size} ${text ? '' : 'icon-only'} ${iconEnd && type === 'solid' ? 'has-end' : ''} ${className ?? ''}`
+		`button ${type} ${tone === 'primary' ? '' : tone} ${size} ${text ? '' : 'icon-only'} ${iconEnd && type === 'solid' ? 'has-end' : ''} ${className ?? ''}`
 	);
 </script>
 
@@ -150,6 +153,16 @@
 		}
 	}
 
+	.secondary {
+		--color-accent: var(--color-secondary);
+		--color-accent-text: var(--color-secondary);
+	}
+
+	.tertiary {
+		--color-accent: var(--color-tertiary);
+		--color-accent-text: var(--color-tertiary);
+	}
+
 	.solid,
 	.outline {
 		padding: var(--btn-padding);
@@ -170,7 +183,7 @@
 	// icon, which then move together as one piece. Its minimum width, not its width, is what changes: the width is the
 	// height (aspect-ratio) once the minimum is gone.
 	.solid.has-end {
-		--py: 8px;
+		--py: 4px;
 		// How far the square and icon sit right of rest while hovered, so the square clears the last letter.
 		--shift: 12px;
 		--ease-cta: cubic-bezier(0.33, -0.22, 0.24, 1.44);
@@ -182,29 +195,29 @@
 		background: none;
 
 		&.sm {
-			--py: 6px;
+			--py: 2px;
 		}
 
 		&.lg {
-			--py: 12px;
+			--py: 8px;
 		}
 
 		&::before {
 			content: '';
 			position: absolute;
-			top: 0;
-			right: 0;
+			top: -1px;
+			right: -1px;
 			z-index: -1;
-			height: 100%;
-			min-width: 100%;
+			height: calc(100% + 2px);
+			min-width: calc(100% + 2px);
 			aspect-ratio: 1;
 			border-radius: var(--radius-btn);
 			background: var(--color-accent);
 
 			@include mixins.mq-motion-allow {
 				transition:
-					min-width 0.75s var(--ease-cta),
-					translate 0.4s var(--ease-cta);
+					min-width 0.75s var(--ease),
+					translate 0.4s var(--ease);
 			}
 		}
 
@@ -212,7 +225,7 @@
 			color: var(--color-on-accent);
 
 			@include mixins.mq-motion-allow {
-				transition: translate 0.4s var(--ease-cta);
+				transition: translate 0.4s var(--ease);
 			}
 		}
 
@@ -230,7 +243,18 @@
 
 			// The square and the icon share one animation, so they move as a single piece: the width comes in and pushes
 			// them right, with a slight tilt, and they settle back.
+			// The springy ease is only for going in; on leaving they settle back with the plain ease above.
 			@include mixins.mq-motion-allow {
+				&::before {
+					transition:
+						min-width 0.75s var(--ease-cta),
+						translate 0.4s var(--ease-cta);
+				}
+
+				.end {
+					transition: translate 0.4s var(--ease-cta);
+				}
+
 				&::before,
 				.end {
 					animation: push 1s var(--ease-cta) 0.2s;
@@ -270,6 +294,10 @@
 	.end {
 		position: relative;
 		display: inline-flex;
+
+		:global(.icon) {
+			--icon-size: 0.9em;
+		}
 	}
 
 	.circle {
@@ -315,42 +343,80 @@
 
 	.underline,
 	.text {
-		--fill-y: 9px;
-		--fill-x: 17px;
+		--fill-y: 5px;
+		--fill-x: 13px;
+		--dot: 9px;
 
 		position: relative;
 		isolation: isolate;
 
 		&.sm {
-			--fill-y: 7px;
-			--fill-x: 13px;
+			--fill-y: 3px;
+			--fill-x: 9px;
+			--dot: 7px;
 		}
 
 		&.lg {
-			--fill-y: 13px;
-			--fill-x: 25px;
+			--fill-y: 9px;
+			--fill-x: 21px;
+			--dot: 12px;
 		}
 
+		// At rest the fill is a small square in the space left of the text. On hover it grows to the link's height, then
+		// to its width; on leaving the width goes first, then the height.
 		&::before {
 			content: '';
 			position: absolute;
-			inset: calc(-1 * var(--fill-y)) calc(-1 * var(--fill-x));
+			top: 50%;
+			left: calc(-1 * var(--fill-x) - 4px);
 			z-index: -1;
-			border-radius: var(--radius-btn);
+			width: var(--dot);
+			height: var(--dot);
+			translate: 0 -50%;
+			border-radius: 2px;
 			background: var(--color-secondary);
-			transform: scaleX(0);
-			transform-origin: left;
 
 			@include mixins.mq-motion-allow {
-				transition: transform 0.5s var(--ease);
+				transition:
+					width 0.4s var(--ease),
+					left 0.4s var(--ease),
+					height 0.3s var(--ease) 0.15s,
+					border-radius 0.3s var(--ease) 0.15s;
 			}
+		}
+
+		@include mixins.mq-motion-allow {
+			transition:
+				background var(--duration) var(--ease),
+				color 0.2s var(--ease),
+				border-color var(--duration) var(--ease),
+				scale var(--duration) var(--ease);
 		}
 
 		@include mixins.desktop-hover {
 			color: var(--color-on-accent);
 
 			&::before {
-				transform: scaleX(1);
+				left: calc(-1 * var(--fill-x));
+				width: calc(100% + 2 * var(--fill-x));
+				height: calc(100% + 2 * var(--fill-y));
+				border-radius: var(--radius-btn);
+
+				@include mixins.mq-motion-allow {
+					transition:
+						height 0.3s var(--ease),
+						border-radius 0.3s var(--ease),
+						left 0.5s var(--ease) 0.05s,
+						width 0.5s var(--ease) 0.05s;
+				}
+			}
+
+			@include mixins.mq-motion-allow {
+				transition:
+					background var(--duration) var(--ease),
+					color 0.3s var(--ease) 0.1s,
+					border-color var(--duration) var(--ease),
+					scale var(--duration) var(--ease);
 			}
 		}
 	}

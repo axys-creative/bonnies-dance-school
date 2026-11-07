@@ -31,7 +31,7 @@
 </script>
 
 <SmoothScroll />
-<PageTransition name="fade" preserveHeader />
+<PageTransition preserveHeader />
 
 <div class="site">
 	{#if site.headerTemplate === 'absolute'}
@@ -89,14 +89,29 @@
 <AlertStack />
 
 <style lang="scss">
+	@use 'base/mixins';
+
 	.site {
 		display: flex;
 		flex-direction: column;
 		min-height: 100lvh;
 	}
 
+	// Above the footer, which rises from behind it.
 	main {
+		position: relative;
+		z-index: 1;
 		flex: 1;
+		padding-block-end: 120px;
+		background: var(--color-bg);
+
+		@include mixins.min-md {
+			padding-block-end: 180px;
+		}
+
+		@include mixins.min-lg {
+			padding-block-end: 240px;
+		}
 
 		&:focus {
 			outline: none;

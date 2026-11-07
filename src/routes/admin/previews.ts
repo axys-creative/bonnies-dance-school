@@ -1,5 +1,10 @@
 import type { Component } from 'svelte';
 import globalCss from '../../styles/styles.scss?inline';
+import CardsThree from '$lib/sections/cards-three.svelte';
+import reviews from '$lib/content/global/reviews.json';
+import RegistrationForm from '$lib/sections/registration-form.svelte';
+import TestimonialsGrid from '$lib/sections/testimonials-grid.svelte';
+import MarqueeTestimonials from '$lib/sections/marquee-testimonials.svelte';
 import CarouselSpotlight from '$lib/sections/carousel-spotlight.svelte';
 import Tunnel from '$lib/sections/tunnel.svelte';
 import HeadlineJumbled from '$lib/sections/headline-jumbled.svelte';
@@ -27,6 +32,33 @@ type H = (tag: string, props?: Record<string, unknown>) => unknown;
 
 // Keyed by the file's `name` in config.json; `props` mirrors what the real page passes.
 const previews: Record<string, Preview> = {
+	cards_three: {
+		component: CardsThree as unknown as Section,
+		props: (data) => ({ ...data, cards: data.cards ?? [], static: true })
+	},
+	marquee_testimonials: {
+		component: MarqueeTestimonials as unknown as Section,
+		props: (data) => {
+			const cta = (data.cta ?? {}) as { primary?: { text?: string } };
+			return {
+				...data,
+				cta: cta.primary?.text ? cta : undefined,
+				testimonials: reviews.reviews.slice(0, 6)
+			};
+		}
+	},
+	registration_form: {
+		component: RegistrationForm as unknown as Section,
+		props: (data) => ({
+			...data,
+			tuition: data.tuition ?? { items: [] },
+			policies: data.policies ?? []
+		})
+	},
+	testimonials_grid: {
+		component: TestimonialsGrid as unknown as Section,
+		props: (data) => ({ ...data, testimonials: reviews.reviews, static: true })
+	},
 	carousel_spotlight: {
 		component: CarouselSpotlight as unknown as Section,
 		props: (data) => {
@@ -35,9 +67,14 @@ const previews: Record<string, Preview> = {
 				...data,
 				cta: { ...cta, secondary: cta.secondary?.text ? cta.secondary : undefined },
 				slides: data.slides ?? [],
+				still: true,
 				autoplay: false
 			};
 		}
+	},
+	location: {
+		component: HeroAbout as unknown as Section,
+		props: (data) => ({ ...data, level: 2 })
 	},
 	tunnel: {
 		component: Tunnel as unknown as Section,
@@ -69,6 +106,7 @@ const previews: Record<string, Preview> = {
 			const cta = (data.cta ?? {}) as { primary?: unknown; secondary?: { text?: string } };
 			return {
 				...data,
+				static: true,
 				cta: { ...cta, secondary: cta.secondary?.text ? cta.secondary : undefined }
 			};
 		}
@@ -94,6 +132,15 @@ function syncStyles(doc: Document) {
 		() => doc.createElement('style'),
 		(el) => {
 			if (el.textContent !== globalCss) el.textContent = globalCss;
+		}
+	);
+
+	upsert(
+		'preview-spacing',
+		() => doc.createElement('style'),
+		(el) => {
+			el.textContent =
+				':root { --section-space-start: calc(var(--section-space) / 2); --section-space-end: calc(var(--section-space) / 2); }';
 		}
 	);
 

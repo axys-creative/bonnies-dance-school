@@ -1,0 +1,74 @@
+{
+	"reviews": [
+		{
+			"quote": "My daughter walked in shy and now she can't wait for Saturday class. Bonnie makes every kid feel like they belong.",
+			"name": "Sarah M.",
+			"role": "Parent"
+		},
+		{
+			"quote": "The studio feels like a second home. I've never felt judged here, even on the days I forget every step.",
+			"name": "Emma R.",
+			"role": "Student"
+		},
+		{
+			"quote": "Both of my kids dance here, at very different levels, and both get exactly the attention they need.",
+			"name": "Jason T.",
+			"role": "Parent"
+		},
+		{
+			"quote": "I started as a complete beginner at 30. The teachers were patient, encouraging and genuinely fun.",
+			"name": "Kayla D.",
+			"role": "Student"
+		},
+		{
+			"quote": "Small classes, warm teachers and real progress. We've recommended Bonnie's to everyone we know.",
+			"name": "Megan L.",
+			"role": "Parent"
+		},
+		{
+			"quote": "Recital day was the proudest moment of my year. I never thought I could perform in front of people!",
+			"name": "Ava P.",
+			"role": "Student"
+		},
+		{
+			"quote": "My son was nervous about trying dance. Two weeks in, he is practicing in the kitchen every night.",
+			"name": "Daniel W.",
+			"role": "Parent"
+		},
+		{
+			"quote": "I love that every class feels different. Some days it's technique, some days it's pure joy.",
+			"name": "Chloe H.",
+			"role": "Student"
+		},
+		{
+			"quote": "The teachers remember every dancer's name and every dancer's goals. That care is rare.",
+			"name": "Rachel S.",
+			"role": "Parent"
+		},
+		{
+			"quote": "I was worried I was too old to start. I was the one who needed to be convinced, not the studio.",
+			"name": "Priya N.",
+			"role": "Student"
+		},
+		{
+			"quote": "Our twins have grown so much in confidence. They walk taller, and they smile more.",
+			"name": "Tom & Lisa B.",
+			"role": "Parent"
+		},
+		{
+			"quote": "Everyone cheers for each other here. That's what keeps me coming back every week.",
+			"name": "Mia G.",
+			"role": "Student"
+		},
+		{
+			"quote": "Flexible schedules and a really welcoming front desk made joining easy for our busy family.",
+			"name": "Andrea C.",
+			"role": "Parent"
+		},
+		{
+			"quote": "I came for the exercise and stayed for the friends. Best decision I made this year.",
+			"name": "Jordan K.",
+			"role": "Student"
+		}
+	]
+}

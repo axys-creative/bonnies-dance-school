@@ -4,3 +4,24 @@
 .text-split__lines {
 	display: inline-block;
 }
+
+// A word moves to the next line whole; it is never broken in the middle, even when it is wider than its column.
+.text-split__words {
+	white-space: nowrap;
+}
+
+// The clip around each letter would cut off ink that overhangs its advance, such as the arms of a T. The negative margin cancels the padding, so the layout does not change.
+.text-split__chars-mask,
+.text-split__words-mask,
+.text-split__lines-mask {
+	padding-inline: 0.12em;
+	margin-inline: -0.12em;
+}
+
+// Text that will be revealed (`data-reveal` in the markup) stays hidden until its pieces are set up, so it never flashes
+// on screen before the animation starts. Without JavaScript it just shows.
+@media (scripting: enabled) {
+	[data-reveal]:not([data-reveal-ready]) {
+		visibility: hidden;
+	}
+}

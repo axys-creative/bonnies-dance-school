@@ -1,0 +1,42 @@
+{
+	"tuition": {
+		"items": [
+			{
+				"label": "Monthly tuition",
+				"value": "$40.00",
+				"note": "One hour class per week."
+			},
+			{
+				"label": "December tuition",
+				"value": "$17.50",
+				"note": "We only meet for half of the month. We do an in-studio performance for Christmas, with a costume provided for the dancers to use."
+			},
+			{
+				"label": "Costume fee",
+				"value": "$60.00",
+				"note": "Due at the beginning of December, per student. Dancers use it for the April recital."
+			},
+			{
+				"label": "Recital fee",
+				"value": "$40.00",
+				"note": "Due at the beginning of April. It covers renting a building and the insurance for the night of rehearsal and the night of the recital."
+			}
+		],
+		"footnote": "Classes begin in September. Contact Bonnie for dates and times: 801-513-6972 (text preferred)."
+	},
+	"steps": ["Students", "Family", "Policies"],
+	"policies": [
+		"I agree to pay the $40 monthly tuition.",
+		"I understand that payment is due by the first class of each month, with a grace period until the second class of the month. After the second class of the month, the payment is late and I will charge a $10 late fee. Tuition is the same for shorter months and months with holidays. Longer months average the classes out.",
+		"I will be on time picking my child up from class. I understand that other classes are starting right after my child’s class.",
+		"I agree to a $40.00 recital fee (concert to be held during April).",
+		"I agree to a costume fee of $60.00 for the spring recital. I understand the costume fee is per student. I will pay this fee at the beginning of December. I understand my dancer will keep their costume when the dance recital is over. I also agree to buy my child’s tights for the concert.",
+		"My student will wear dance clothes to class. No bare midriffs. No jeans, sweatpants, or baggy clothing.",
+		"I will not bring my child to class if they are sick or contagious in anyway.",
+		"No gum, food, or drink allowed in the studio. Bottled water is okay.",
+		"In order to induce Bonnie’s Dance school to teach my child dance and in consideration of the dance instruction then I hereby release and indemnify Bonnie’s Dance School, its owners and owner of facilities and employees from any and all liability costs or expenses associated, including but not limited to, any injury or death sustained while at Bonnie’s Dance School, participating in any performances related to Bonnie’s Dance School, or practicing any dances or techniques taught at Bonnie’s Dance School.",
+		"I give permission to Bonnie’s Dance School, owners, or employees to seek medical treatment for my child or children in case of an emergency."
+	],
+	"agreement": "I have read, understand, and agree with Bonnie’s Dance School Policies.",
+	"submitText": "Submit registration"
+}

@@ -45,6 +45,8 @@
 		class: className
 	}: TunnelProps = $props();
 
+	const DRIFT = 120;
+
 	const offset = $derived(parallax?.offset ?? '-75%');
 	const scrub = $derived(parallax?.scrub ?? 0);
 
@@ -120,6 +122,17 @@
 						ease: 'none',
 						scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub }
 					});
+					// Once revealed, the picture drifts down inside the box as the section leaves, and the box crops it.
+					gsap.fromTo(
+						media,
+						{ y: 0 },
+						{
+							y: DRIFT,
+							ease: 'none',
+							immediateRender: false,
+							scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub }
+						}
+					);
 				}
 			}, section);
 
@@ -181,6 +194,7 @@
 		justify-content: center;
 		width: 100%;
 		height: var(--section-height);
+		margin-block: var(--section-space-start) var(--section-space-end);
 		container-type: inline-size;
 	}
 
@@ -199,6 +213,12 @@
 		margin-inline: calc((100% - 100cqw) / 2);
 		object-fit: cover;
 		filter: brightness(1);
+	}
+
+	// Taller than the box by the distance it drifts, with the extra above the box, so the drift never shows a gap.
+	.tunnel:not(.centered, .reversed) .media {
+		height: calc(var(--section-height) + 120px);
+		margin-block-start: -120px;
 	}
 
 	// The text sits on a dark fade that runs the full width of the section.

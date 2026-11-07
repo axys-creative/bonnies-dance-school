@@ -36,7 +36,7 @@
 
 	const SHIFT = '24px';
 
-	let section = $state<HTMLElement>();
+	let statement = $state<HTMLElement>();
 	let seen = $state(false);
 
 	const reveal = (index: number) =>
@@ -45,31 +45,31 @@
 			: textFade({
 					type: 'words',
 					style: 'linear',
-					duration: 0.8,
+					duration: 1.3,
 					stagger: 0.08,
 					delay: index * 0.2,
 					ease: 'power2.out',
 					start: 'top 80%',
-					trigger: section
+					trigger: statement
 				});
 
-	// Lines glide in from alternating sides each time the section is 20% into the screen, as the fade starts.
+	// Lines glide in from alternating sides each time the statement itself is 20% into the screen, as the fade starts.
 	$effect(() => {
 		if (isStatic || matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			seen = true;
 			return;
 		}
 
+		if (!statement) return;
 		const watch = new IntersectionObserver(([entry]) => (seen = entry.isIntersecting), {
 			rootMargin: '0px 0px -20% 0px'
 		});
-		watch.observe(section!);
+		watch.observe(statement);
 		return () => watch.disconnect();
 	});
 </script>
 
 <section
-	bind:this={section}
 	{id}
 	class="headline-jumbled {className ?? ''}"
 	class:full-screen={fullScreen}
@@ -77,7 +77,7 @@
 >
 	<div class="inner">
 		<!-- A statement, not a section title, so it is a paragraph that looks like a heading. -->
-		<p class="text">
+		<p class="text" bind:this={statement}>
 			{#each lines as { text, indent = 0 }, index (index)}
 				<span
 					class="line"
@@ -111,7 +111,7 @@
 		container-type: inline-size;
 		width: min(var(--content-width), 100% - var(--body-padding) * 2);
 		margin-inline: auto;
-		padding-block: var(--body-padding-double);
+		padding-block: var(--section-space-start) var(--section-space-end);
 	}
 
 	.text {

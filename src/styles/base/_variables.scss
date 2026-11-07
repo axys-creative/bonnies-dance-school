@@ -40,27 +40,15 @@ $tan: #d1a080;
 	--color-glass: rgb(255 255 255 / 0.25);
 }
 
-// A theme for the element it is included in: dark, light, or invert (the opposite of the page theme).
+// A theme for the element it is included in. The page is always light, so `invert` is dark.
 @mixin theme($name) {
-	@if $name == dark {
+	@if $name == dark or $name == invert {
 		@include dark-tokens;
 	} @else {
 		@include light-tokens;
 	}
 
 	color: var(--color-text);
-
-	@if $name == invert {
-		:root[data-theme='light'] & {
-			@include dark-tokens;
-		}
-
-		@media (prefers-color-scheme: light) {
-			:root:not([data-theme]) & {
-				@include dark-tokens;
-			}
-		}
-	}
 }
 
 :root {
@@ -92,11 +80,16 @@ $tan: #d1a080;
 	--text-body: 16px;
 	--btn-font-size: 16px;
 	--btn-font-weight: 500;
-	--btn-padding: 8px 16px;
-	--btn-padding-sm: 6px 12px;
-	--btn-padding-lg: 12px 24px;
+	--btn-padding: 4px 12px;
+	--btn-padding-sm: 2px 8px;
+	--btn-padding-lg: 8px 20px;
 	--btn-padding-icon: 8px;
 	--btn-gap: 0.5ch;
+
+	// The space above each section. The admin preview halves it and adds the same below.
+	--section-space: 168px;
+	--section-space-start: var(--section-space);
+	--section-space-end: 0px;
 
 	--space-eyebrow-title: 4px;
 	--space-title-paragraph: 24px;
@@ -115,6 +108,14 @@ $tan: #d1a080;
 	--ease: cubic-bezier(0.18, 0.97, 0.47, 1);
 	--duration: 0.3s;
 	--transition-scale: scale var(--duration) var(--ease);
+
+	@media (min-width: 768px) {
+		--section-space: 264px;
+	}
+
+	@media (min-width: 1024px) {
+		--section-space: 360px;
+	}
 }
 
 @media (min-width: 1024px) {
@@ -135,8 +136,4 @@ $tan: #d1a080;
 		--body-padding: 24px;
 		--float-offset: 12px;
 	}
-}
-
-:root[data-theme='dark'] {
-	@include dark-tokens;
 }

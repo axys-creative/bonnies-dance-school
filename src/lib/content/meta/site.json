@@ -4,7 +4,14 @@
 	"headerTemplate": "links",
 	"footerTemplate": "simple",
 	"author": "Bonnie’s Dance School",
-	"contactEmail": "",
+	"contactEmail": "bonniesdanceschool@gmail.com",
+	"phone": "801-513-6972",
+	"address": {
+		"street": "5372 Harvestmill Dr.",
+		"city": "West Jordan",
+		"region": "UT",
+		"postalCode": "84081"
+	},
 	"themeColor": "#fef2f2",
 	"faviconLight": "/images/favicon-light-theme.svg",
 	"faviconDark": "/images/favicon-dark-theme.svg",

@@ -28,15 +28,17 @@
 </script>
 
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { textReveal } from '$lib/attachments/text-reveal';
 	import Marquee from '$lib/components/marquee.svelte';
 	import VideoBg from '$lib/components/video-bg.svelte';
 	import SectionCopy, { type SectionCopyProps } from '$lib/components/section-copy.svelte';
+	import { loadGsap } from '$lib/utils/gsap';
 	import { loading } from '$lib/utils/loading.svelte';
 
 	let {
 		words,
-		size = 'clamp(56px, 12vw, 150px)',
+		size = 'clamp(48px, 9.5vw, 120px)',
 		speed = 120,
 		divider = '·',
 		video,
@@ -53,13 +55,15 @@
 
 	const REVEAL = {
 		type: 'chars',
+		rotate: 5,
 		duration: 0.8,
-		stagger: 0.05,
+		stagger: 0.04,
 		ease: 'power3.out',
 		once: true
 	} as const;
 	const ROW_DELAY = 0.15;
 	const HOLD = 0.1;
+	const DRIFT = 120;
 
 	// Seconds until the last letter of the last row has landed.
 	const revealTime = $derived(
@@ -74,6 +78,56 @@
 	let section = $state<HTMLElement>();
 	let shown = $state(false);
 	let sliding = $state(false);
+	let videoPaused = $state(false);
+	// How far the last row can move right before it meets the content edge; the middle row sits halfway.
+	let slack = $state(0);
+
+	// The word is as wide as its text (not its block) and layout width ignores the reveal's rotation.
+	function measure() {
+		const row = section?.querySelector<HTMLElement>('.words > :last-child');
+		const word = row?.querySelector<HTMLElement>('.word');
+		if (row && word) slack = Math.max(0, row.clientWidth - word.offsetWidth);
+	}
+
+	onMount(() => {
+		measure();
+		const watch = new ResizeObserver(measure);
+		watch.observe(section!);
+		document.fonts.ready.then(measure);
+		// Splitting the text into letters changes its width slightly.
+		const split = new MutationObserver(measure);
+		split.observe(section!, { childList: true, subtree: true });
+		return () => {
+			watch.disconnect();
+			split.disconnect();
+		};
+	});
+
+	// The video is taller than the section by the distance it drifts, so it drifts down as the page scrolls past.
+	onMount(() => {
+		const figure = section?.querySelector<HTMLElement>('.video-bg-figure');
+		if (isStatic || !figure || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		let cancelled = false;
+		let revert: (() => void) | undefined;
+
+		loadGsap('scrollTrigger').then((gsap) => {
+			if (cancelled) return;
+			const context = gsap.context(() => {
+				gsap.to(figure, {
+					y: DRIFT,
+					ease: 'none',
+					scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true }
+				});
+			}, section);
+			revert = () => context.revert();
+		});
+
+		return () => {
+			cancelled = true;
+			revert?.();
+		};
+	});
 
 	const reveal = (index: number) =>
 		isStatic || !loading.done
@@ -116,7 +170,8 @@
 	class:theme-dark={video && textTheme === 'light'}
 	class:theme-light={video && textTheme === 'dark'}
 	class:full-screen={fullScreen}
-	style="--size: {size}; --overlay: {overlay}"
+	class:revealed={shown || isStatic}
+	style="--size: {size}; --overlay: {overlay}; --indent-2: {slack / 2}px; --indent-3: {slack}px"
 >
 	{#if copy.eyebrowText || copy.eyebrowIcon}
 		<div class="inner">
@@ -127,15 +182,28 @@
 
 	<div class="words">
 		<div class="inner">
-			<span class="word" aria-hidden="true" {@attach reveal(0)}>{words[0]}</span>
+			<span
+				class="word"
+				aria-hidden="true"
+				data-reveal={isStatic ? undefined : ''}
+				{@attach reveal(0)}>{words[0]}</span
+			>
 		</div>
 
 		<div class="middle" class:sliding aria-hidden="true">
 			<div class="inner">
-				<span class="word" {@attach reveal(1)}>{words[1][0]}</span>
+				<span class="word" data-reveal={isStatic ? undefined : ''} {@attach reveal(1)}
+					>{words[1][0]}</span
+				>
 			</div>
 			{#if sliding}
-				<Marquee class="slide" label={words[1].join(', ')} {speed} alternate={false}>
+				<Marquee
+					class="slide"
+					label={words[1].join(', ')}
+					{speed}
+					alternate={false}
+					hold={videoPaused}
+				>
 					{#each words[1] as word, index (index)}
 						<span class="word" style="--i: {index}">{word}</span>
 						{#if divider}
@@ -147,7 +215,12 @@
 		</div>
 
 		<div class="inner">
-			<span class="word" aria-hidden="true" {@attach reveal(2)}>{words[2]}</span>
+			<span
+				class="word"
+				aria-hidden="true"
+				data-reveal={isStatic ? undefined : ''}
+				{@attach reveal(2)}>{words[2]}</span
+			>
 		</div>
 	</div>
 
@@ -159,8 +232,10 @@
 					descriptionAttach={shown && !isStatic
 						? textReveal({
 								from: 'top',
-								duration: 0.6,
-								stagger: 0.03,
+								rotate: -5,
+								duration: 0.9,
+								stagger: 0.02,
+								ease: 'power3.out',
 								once: true,
 								trigger: section
 							})
@@ -174,7 +249,7 @@
 	{/if}
 
 	{#if video}
-		<VideoBg src={video} shadow={null} />
+		<VideoBg src={video} shadow={null} ontoggle={(paused) => (videoPaused = paused)} />
 	{/if}
 </section>
 
@@ -204,6 +279,52 @@
 		pointer-events: none;
 	}
 
+	// The video stays put; a circle in the middle of its frame opens until it covers the section.
+	.video-bg :global(.video-bg-figure) {
+		top: -120px;
+
+		@media (scripting: enabled) {
+			clip-path: circle(0% at 50% 50%);
+		}
+	}
+
+	.video-bg.revealed :global(.video-bg-figure) {
+		clip-path: circle(72% at 50% 50%);
+
+		@include mixins.mq-motion-allow {
+			transition: clip-path 1.6s cubic-bezier(0.6, 0, 0.07, 1);
+		}
+	}
+
+	// The pause button fades in as soon as the circle has finished opening (1.6s).
+	.video-bg:not(.revealed) :global(.toggle) {
+		@media (scripting: enabled) {
+			opacity: 0;
+			visibility: hidden;
+		}
+	}
+
+	.video-bg.revealed :global(.toggle) {
+		@include mixins.mq-motion-allow {
+			transition:
+				opacity 1s var(--ease) 1.6s,
+				visibility 0s 1.6s,
+				background var(--duration) var(--ease),
+				color var(--duration) var(--ease),
+				border-color var(--duration) var(--ease);
+		}
+	}
+
+	.video-bg :global(.toggle) {
+		@include mixins.mq-motion-allow {
+			transition:
+				opacity 1s var(--ease),
+				background var(--duration) var(--ease),
+				color var(--duration) var(--ease),
+				border-color var(--duration) var(--ease);
+		}
+	}
+
 	.full-screen {
 		min-height: 100lvh;
 		justify-content: center;
@@ -225,17 +346,21 @@
 		margin-block: calc(var(--overhang) * -1);
 		font-size: var(--size);
 
+		@include mixins.min-lg {
+			translate: 0 40px;
+		}
+
 		> :global(* + *) {
 			margin-top: calc(var(--overhang) * -2);
 		}
 
 		@include mixins.min-md {
 			> :nth-child(2) {
-				--indent: 96px;
+				--indent: var(--indent-2, 96px);
 			}
 
 			> :nth-child(3) {
-				--indent: 192px;
+				--indent: var(--indent-3, 192px);
 			}
 
 			.inner {
@@ -321,6 +446,7 @@
 
 	.word {
 		display: block;
+		width: fit-content;
 		font-family: var(--font-heading);
 		font-size: var(--size);
 		font-weight: 300;

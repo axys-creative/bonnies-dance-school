@@ -39,10 +39,19 @@ export function animate({
 			if (duration) (target as HTMLElement).style.setProperty('--animate-duration', `${duration}s`);
 		});
 
+		const born = performance.now();
+		let frames: number[] = [];
+
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
-					targets.forEach((target) => target.classList.add('animated'));
+					const show = () => targets.forEach((target) => target.classList.add('animated'));
+					// Already in view as it appears: wait two frames so the hidden state is painted and the change transitions.
+					if (performance.now() - born < 200) {
+						frames.push(requestAnimationFrame(() => frames.push(requestAnimationFrame(show))));
+					} else {
+						show();
+					}
 					if (once) observer.disconnect();
 				} else if (!once) {
 					targets.forEach((target) => target.classList.remove('animated'));
@@ -53,6 +62,8 @@ export function animate({
 		observer.observe(watched);
 
 		return () => {
+			frames.forEach(cancelAnimationFrame);
+			frames = [];
 			observer.disconnect();
 			targets.forEach((target) => {
 				target.classList.remove('animate', `animate--${variant}`, 'animated');

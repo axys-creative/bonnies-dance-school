@@ -22,8 +22,10 @@
 		reverse?: boolean;
 		/** Ties the rows to scrolling, on top of their own motion: `1` is 1px per 1px scrolled. */
 		scrub?: number;
-		/** Holds the motion while the pointer or keyboard focus is on the marquee. */
+		/** Eases the motion to a stop while the pointer or keyboard focus is on the marquee, and back up to speed after. */
 		pauseOnHover?: boolean;
+		/** Eases the motion to a stop while `true`, and back up to speed when it turns `false`. */
+		hold?: boolean;
 		class?: string;
 	};
 </script>
@@ -43,6 +45,7 @@
 		reverse = false,
 		scrub = 0,
 		pauseOnHover = false,
+		hold,
 		class: className
 	}: MarqueeProps = $props();
 
@@ -82,15 +85,16 @@
 		const intersect = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
 		intersect.observe(marquee!);
 
-		// CSS can run a row forwards but not backwards or with a scroll offset and still wrap seamlessly, so with
-		// `reverse` or `scrub` the script moves the rows instead, as the Image Wave does.
+		// CSS can run a row forwards but not backwards, with a scroll offset, or easing to a stop, and still wrap
+		// seamlessly, so with `reverse`, `scrub`, `pauseOnHover` or `hold` the script moves the rows instead.
 		let frame = 0;
-		if (!still && (reverse || scrub > 0)) {
+		if (!still && (reverse || scrub > 0 || pauseOnHover || hold !== undefined)) {
 			driven = true;
 			const tracks = Array.from(marquee!.querySelectorAll<HTMLElement>('.track'));
 			let idle = 0;
 			let offset = scrollY * scrub;
 			let heading = 1;
+			let rate = 1;
 			let direction = 1;
 			let lastY = scrollY;
 			let last = performance.now();
@@ -109,7 +113,8 @@
 
 				if (visible && halfWidth) {
 					offset += (scrollY * scrub - offset) * (1 - Math.exp(-elapsed / 120));
-					if (!held) idle += heading * speed * (elapsed / 1000);
+					rate += ((held || hold ? 0 : 1) - rate) * (1 - Math.exp(-elapsed / 350));
+					idle += heading * rate * speed * (elapsed / 1000);
 					tracks.forEach((track, row) => {
 						const sign = reversedRow(row) ? -1 : 1;
 						const x = ((((idle + offset) * sign) % halfWidth) + halfWidth) % halfWidth;

@@ -17,7 +17,8 @@ export type TextScrollOptions = {
 	trigger?: string | Element;
 };
 
-export type TextSplit = 'chars' | 'words' | 'lines';
+/** `'words,chars'` splits both and animates the characters, keeping the words available on `split`. */
+export type TextSplit = 'chars' | 'words' | 'lines' | 'words,chars';
 
 type Build = (context: {
 	gsap: typeof Gsap;
@@ -48,6 +49,10 @@ export function textScroll(
 	let cancelled = false;
 	let revert: (() => void) | undefined;
 
+	// Text marked `data-reveal` is hidden until its pieces are set up; the timer shows it if GSAP never loads.
+	const ready = () => (el.dataset.revealReady = '');
+	const fallback = setTimeout(ready, 4000);
+
 	const watched = (typeof trigger === 'string' ? document.querySelector(trigger) : trigger) ?? el;
 	const scrollTrigger: ScrollTrigger.Vars = {
 		trigger: watched,
@@ -69,25 +74,29 @@ export function textScroll(
 		context.add(() => {
 			if (!split || !SplitText) {
 				build({ gsap, targets: [el], scrollTrigger });
+				ready();
 				return;
 			}
 
 			SplitText.create(el, {
 				type: split,
-				[`${split}Class`]: `text-split__${split}`,
+				...Object.fromEntries(
+					split.split(',').map((type) => [`${type}Class`, `text-split__${type}`])
+				),
 				aria: 'auto',
-				...(mask ? { mask: split } : {}),
+				...(mask ? { mask: split === 'words,chars' ? 'chars' : split } : {}),
 				autoSplit: true,
 				onSplit(self) {
 					let animation: gsap.core.Animation | void = undefined;
 					context.add(() => {
 						animation = build({
 							gsap,
-							targets: self[split] as HTMLElement[],
+							targets: (split === 'words,chars' ? self.chars : self[split]) as HTMLElement[],
 							scrollTrigger,
 							split: self
 						});
 					});
+					ready();
 					return animation;
 				}
 			});
@@ -97,6 +106,7 @@ export function textScroll(
 
 	return () => {
 		cancelled = true;
+		clearTimeout(fallback);
 		revert?.();
 	};
 }

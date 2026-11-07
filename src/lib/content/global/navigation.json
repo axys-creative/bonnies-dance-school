@@ -20,7 +20,7 @@
 		{
 			"text": "Join a class",
 			"textDescription": "Join a class at Bonnie’s Dance School",
-			"url": "/contact",
+			"url": "/join",
 			"newTab": false,
 			"type": "solid"
 		}

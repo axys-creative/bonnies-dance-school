@@ -49,7 +49,17 @@
 					'@id': `${origin}/#organization`,
 					name: site.siteName,
 					url: origin,
-					...(site.contactEmail && { email: site.contactEmail })
+					...(site.contactEmail && { email: site.contactEmail }),
+					...(site.phone && { telephone: site.phone }),
+					...(site.address?.street && {
+						address: {
+							'@type': 'PostalAddress',
+							streetAddress: site.address.street,
+							addressLocality: site.address.city,
+							addressRegion: site.address.region,
+							postalCode: site.address.postalCode
+						}
+					})
 				},
 				...(seo?.type === 'article'
 					? [

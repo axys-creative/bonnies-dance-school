@@ -1,0 +1,20 @@
+{
+	"title": "Our vision,{.br}goals and{.br}commitment",
+	"cards": [
+		{
+			"icon": "/uploads/card-sun.svg",
+			"title": "Our vision",
+			"description": "A studio where every dancer, of any age or level, feels they belong and discovers the joy of moving."
+		},
+		{
+			"icon": "/uploads/card-flower.svg",
+			"title": "Our goals",
+			"description": "To build technique, confidence and creativity in every class, and to help each dancer reach goals they set for themselves."
+		},
+		{
+			"icon": "/uploads/card-diamond.svg",
+			"title": "Our commitment",
+			"description": "Encouraging teachers, a welcoming studio and a positive community that supports dancers on and off the floor."
+		}
+	]
+}

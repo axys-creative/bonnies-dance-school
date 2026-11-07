@@ -12,7 +12,7 @@
 		"primary": {
 			"text": "Join a class",
 			"textDescription": "Join a class at Bonnie’s Dance School",
-			"url": "/",
+			"url": "/join",
 			"newTab": false,
 			"iconEnd": ""
 		},
