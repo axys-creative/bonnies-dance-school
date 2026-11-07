@@ -6,7 +6,7 @@
 		<meta name="text-scale" content="scale" />
 		<script>
 			try {
-				const saved = localStorage.getItem('theme-preference') || 'system';
+				const saved = localStorage.getItem('theme-preference') || 'light';
 				const dark = matchMedia('(prefers-color-scheme: dark)').matches;
 				document.documentElement.dataset.theme =
 					saved === 'system' ? (dark ? 'dark' : 'light') : saved;

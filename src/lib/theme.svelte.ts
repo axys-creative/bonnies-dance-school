@@ -3,7 +3,7 @@ export type ThemePreference = 'system' | 'light' | 'dark';
 const STORAGE_KEY = 'theme-preference';
 const query = () => matchMedia('(prefers-color-scheme: dark)');
 
-export const theme = $state<{ preference: ThemePreference }>({ preference: 'system' });
+export const theme = $state<{ preference: ThemePreference }>({ preference: 'light' });
 
 function apply(preference: ThemePreference) {
 	const resolved = preference === 'system' ? (query().matches ? 'dark' : 'light') : preference;
@@ -23,9 +23,9 @@ export function setTheme(preference: ThemePreference) {
 // Call once from onMount; returns a cleanup function.
 export function initTheme() {
 	try {
-		theme.preference = (localStorage.getItem(STORAGE_KEY) as ThemePreference) || 'system';
+		theme.preference = (localStorage.getItem(STORAGE_KEY) as ThemePreference) || 'light';
 	} catch {
-		theme.preference = 'system';
+		theme.preference = 'light';
 	}
 
 	apply(theme.preference);

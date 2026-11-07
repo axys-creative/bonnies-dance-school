@@ -1,4 +1,4 @@
-# axys-template
+# bonnies-dance-school
 
 SvelteKit + SCSS + JSON content, edited through Decap CMS and hosted on Netlify.
 

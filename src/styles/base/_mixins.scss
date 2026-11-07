@@ -152,7 +152,7 @@ $breakpoints: (
 
 @mixin body {
 	font-family: var(--font-body);
-	font-size: 16px;
+	font-size: var(--text-body);
 	font-weight: 400;
 	line-height: 1.5;
 }
@@ -161,6 +161,11 @@ $breakpoints: (
 	@include body;
 	font-size: 20px;
 	line-height: 1.6;
+}
+
+@mixin description-large {
+	@include body-large;
+	color: var(--color-text-muted);
 }
 
 @mixin body-small {

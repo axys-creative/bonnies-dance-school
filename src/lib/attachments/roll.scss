@@ -71,6 +71,9 @@
 		.roll__char,
 		.roll__slide {
 			translate: var(--roll-x) var(--roll-y);
+			transition-delay: calc(
+				var(--roll-index, 0) * var(--roll-stagger, 0.02s) + var(--roll-delay, 0s)
+			);
 		}
 	}
 
@@ -79,6 +82,9 @@
 		.roll__char,
 		.roll__slide {
 			translate: var(--roll-x) var(--roll-y);
+			transition-delay: calc(
+				var(--roll-index, 0) * var(--roll-stagger, 0.02s) + var(--roll-delay, 0s)
+			);
 		}
 	}
 }

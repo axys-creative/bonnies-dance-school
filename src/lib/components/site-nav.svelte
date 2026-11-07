@@ -16,8 +16,8 @@
 		ctas?: ButtonProps[];
 		/** Shows at every screen size. Without it, it is for small screens only (a header shows its own links above that). */
 		always?: boolean;
-		/** `center` fades in over the whole screen with the links centered in a column and the social links, under a small label, at the bottom. `overlay` fills the screen. `slide` is a panel that slides in from the right, over about three quarters of the screen (all of it on the smallest), with no backdrop, and the social links in a strap at its bottom right. */
-		variant?: 'overlay' | 'slide' | 'center';
+		/** `center` fades in over the whole screen with the links centered in a column and the social links, under a small label, at the bottom. `overlay` fills the screen. `left` fills the screen with the links left-aligned and centered vertically, the buttons under them, and the social links at the bottom left. `slide` is a panel that slides in from the right, over about three quarters of the screen (all of it on the smallest), with no backdrop, and the social links in a strap at its bottom right. */
+		variant?: 'overlay' | 'slide' | 'center' | 'left';
 		/** The small label above the social links, for the `center` variant. */
 		socialLabel?: string;
 		/** The icon in the strap's loop, for the `slide` variant. */
@@ -90,8 +90,12 @@
 {#snippet buttons()}
 	{#if ctas.length}
 		<div class="ctas">
-			{#each ctas as cta (`${cta.url}|${cta.text}`)}
-				<Button {...cta} {@attach roll()} />
+			{#each ctas as cta, index (`${cta.url}|${cta.text}`)}
+				<Button
+					{...cta}
+					iconEnd={cta.iconEnd || (index === 0 ? 'arrow-tr' : undefined)}
+					{@attach roll()}
+				/>
 			{/each}
 		</div>
 	{/if}
@@ -127,7 +131,7 @@
 			{#if footerLinks.length}
 				<ul class="footer-links">
 					{#each footerLinks as link (`${link.url}|${link.text}`)}
-						<li><Button {...link} type="underline" size="sm" {@attach roll()} /></li>
+						<li><Button {...link} type="underline" size="sm" /></li>
 					{/each}
 				</ul>
 			{/if}
@@ -181,6 +185,20 @@
 				</div>
 			{/if}
 		</div>
+	{:else if variant === 'left'}
+		<div class="left-wrap">
+			<div class="left-links">
+				<MenuLinks
+					class="site-nav-links"
+					{links}
+					label="Primary"
+					direction="column"
+					landmark={false}
+				/>
+				{@render buttons()}
+			</div>
+			<SocialLinks links={socialLinks} solid={socialSolid} />
+		</div>
 	{:else}
 		<div class="constraint">
 			<MenuLinks
@@ -196,7 +214,7 @@
 				{#if footerLinks.length}
 					<ul class="footer-links">
 						{#each footerLinks as link (`${link.url}|${link.text}`)}
-							<li><Button {...link} type="underline" size="sm" {@attach roll()} /></li>
+							<li><Button {...link} type="underline" size="sm" /></li>
 						{/each}
 					</ul>
 				{/if}
@@ -426,6 +444,35 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 16px;
+	}
+
+	// The left variant: the links sit left, centered in the screen, and the social links rest at the bottom left.
+	.left-wrap {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 32px;
+		min-height: 480px;
+		padding: 112px var(--body-padding) var(--body-padding);
+	}
+
+	.left-links {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 40px;
+	}
+
+	.site-nav :global(.left-links .site-nav-links) {
+		--btn-font-size: 32px;
+
+		margin-block: 0;
+
+		@include mixins.min-md {
+			--btn-font-size: 40px;
+		}
 	}
 
 	.footer {

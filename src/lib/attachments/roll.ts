@@ -12,6 +12,8 @@ export type RollOptions = {
 	rewind?: boolean;
 	/** Seconds between each piece starting to roll. */
 	stagger?: number;
+	/** Seconds to wait before the first piece starts rolling, e.g. for a background to arrive first. */
+	delay?: number;
 	/** Seconds each piece takes to roll. */
 	duration?: number;
 	/** The element that holds the content: a selector inside, or an element. Defaults to a `.label` (as in Button), else the element itself. */
@@ -48,6 +50,7 @@ export function roll({
 	direction = 'up',
 	rewind = true,
 	stagger = 0.02,
+	delay = 0,
 	duration = 0.6,
 	target: targetOption
 }: RollOptions = {}): Attachment<HTMLElement> {
@@ -120,6 +123,7 @@ export function roll({
 		el.classList.add(...modifiers);
 		el.style.setProperty('--roll-stagger', `${stagger}s`);
 		el.style.setProperty('--roll-duration', `${duration}s`);
+		el.style.setProperty('--roll-delay', `${delay}s`);
 
 		// The copy is identical, so when a roll ends and the piece snaps back to rest nothing seems to change.
 		const pieces = [...wrapper.querySelectorAll<HTMLElement>('.roll__char')];
@@ -143,7 +147,8 @@ export function roll({
 			].map((node) =>
 				node.animate([{ translate: '0% 0%' }, { translate: way }], {
 					duration: duration * 1000,
-					delay: Number(node.style.getPropertyValue('--roll-index') || 0) * stagger * 1000,
+					delay:
+						(delay + Number(node.style.getPropertyValue('--roll-index') || 0) * stagger) * 1000,
 					easing,
 					fill: 'backwards'
 				})
@@ -175,6 +180,7 @@ export function roll({
 			el.classList.remove(...modifiers);
 			el.style.removeProperty('--roll-stagger');
 			el.style.removeProperty('--roll-duration');
+			el.style.removeProperty('--roll-delay');
 		};
 	};
 }

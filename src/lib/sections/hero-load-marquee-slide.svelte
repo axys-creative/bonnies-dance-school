@@ -11,6 +11,12 @@
 		divider?: string;
 		/** Pixels per second the middle word slides. */
 		speed?: number;
+		/** A video behind the section, a Mux playback ID or a video URL. */
+		video?: string;
+		/** The color of the text over the video. A scrim of the opposite color sits between them. Defaults to `'light'`. */
+		textTheme?: 'light' | 'dark';
+		/** How strong the scrim over the video is, 0 to 100. Defaults to `40`. */
+		overlay?: number;
 		/** At least the height of the screen. Taller content still grows past it. */
 		fullScreen?: boolean;
 		/** The section's anchor, so a link or the CMS preview can point to `#id`. */
@@ -24,14 +30,18 @@
 <script lang="ts">
 	import { textReveal } from '$lib/attachments/text-reveal';
 	import Marquee from '$lib/components/marquee.svelte';
+	import VideoBg from '$lib/components/video-bg.svelte';
 	import SectionCopy, { type SectionCopyProps } from '$lib/components/section-copy.svelte';
 	import { loading } from '$lib/utils/loading.svelte';
 
 	let {
 		words,
-		size = 'clamp(72px, 15vw, 180px)',
+		size = 'clamp(56px, 12vw, 150px)',
 		speed = 120,
 		divider = '·',
+		video,
+		textTheme = 'light',
+		overlay = 40,
 		fullScreen = true,
 		id,
 		static: isStatic = false,
@@ -102,8 +112,11 @@
 	bind:this={section}
 	{id}
 	class="hero-load-marquee-slide {className ?? ''}"
+	class:video-bg={video}
+	class:theme-dark={video && textTheme === 'light'}
+	class:theme-light={video && textTheme === 'dark'}
 	class:full-screen={fullScreen}
-	style="--size: {size}"
+	style="--size: {size}; --overlay: {overlay}"
 >
 	{#if copy.eyebrowText || copy.eyebrowIcon}
 		<div class="inner">
@@ -113,27 +126,8 @@
 	<h1 class="visually-hidden">{words[0]} {words[1].join(', ')} {words[2]}</h1>
 
 	<div class="words">
-		<div class="inner first">
+		<div class="inner">
 			<span class="word" aria-hidden="true" {@attach reveal(0)}>{words[0]}</span>
-			{#if description || cta?.primary?.text}
-				<div class="copy" class:shown={shown || isStatic}>
-					<SectionCopy
-						{description}
-						descriptionAttach={shown && !isStatic
-							? textReveal({
-									from: 'top',
-									duration: 0.6,
-									stagger: 0.03,
-									once: true,
-									trigger: section
-								})
-							: undefined}
-						{cta}
-						showEyebrow={false}
-						showTitle={false}
-					/>
-				</div>
-			{/if}
 		</div>
 
 		<div class="middle" class:sliding aria-hidden="true">
@@ -156,17 +150,58 @@
 			<span class="word" aria-hidden="true" {@attach reveal(2)}>{words[2]}</span>
 		</div>
 	</div>
+
+	{#if description || cta?.primary?.text}
+		<div class="inner copy-row">
+			<div class="copy" class:shown={shown || isStatic}>
+				<SectionCopy
+					{description}
+					descriptionAttach={shown && !isStatic
+						? textReveal({
+								from: 'top',
+								duration: 0.6,
+								stagger: 0.03,
+								once: true,
+								trigger: section
+							})
+						: undefined}
+					{cta}
+					showEyebrow={false}
+					showTitle={false}
+				/>
+			</div>
+		</div>
+	{/if}
+
+	{#if video}
+		<VideoBg src={video} shadow={null} />
+	{/if}
 </section>
 
 <style lang="scss">
 	@use 'base/mixins';
 
 	.hero-load-marquee-slide {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 48px;
-		padding-block: var(--body-padding-double);
+		padding-block: var(--body-padding-double) calc(var(--body-padding-double) + 7rem);
 		overflow: clip;
+	}
+
+	// The scrim takes the surface color, so it is dark under light text and light under dark text.
+	.video-bg::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: linear-gradient(
+			to top,
+			color-mix(in srgb, var(--color-bg) min(calc(var(--overlay) * 1.5%), 95%), transparent),
+			color-mix(in srgb, var(--color-bg) calc(var(--overlay) * 1%), transparent) 70%
+		);
+		pointer-events: none;
 	}
 
 	.full-screen {
@@ -247,24 +282,20 @@
 		}
 	}
 
-	.first {
-		display: flex;
-		flex-direction: column;
-		gap: 24px;
-
-		@include mixins.min-md {
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-			gap: 48px;
-		}
+	// The copy sits in the bottom left of the section, in line with the page content.
+	.copy-row {
+		position: absolute;
+		bottom: var(--body-padding);
+		right: 0;
+		left: 0;
 	}
 
 	.copy {
 		width: 100%;
-		max-width: 320px;
+		max-width: 440px;
 
 		:global(.description) {
+			color: var(--color-text);
 			text-wrap: balance;
 		}
 

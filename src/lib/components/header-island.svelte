@@ -164,7 +164,7 @@
 					{#if footerLinks.length}
 						<ul class="footer-links">
 							{#each footerLinks as link (`${link.url}|${link.text}`)}
-								<li><Button {...link} type="underline" size="sm" {@attach roll()} /></li>
+								<li><Button {...link} type="underline" size="sm" /></li>
 							{/each}
 						</ul>
 					{/if}

@@ -12,6 +12,8 @@ export type TextFadeOptions = TextScrollOptions & {
 	stagger?: number;
 	/** A GSAP ease. */
 	ease?: string;
+	/** Seconds to wait after the trigger fires before the first piece starts. */
+	delay?: number;
 };
 
 /** Fades text in word by word or character by character as it scrolls into view. */
@@ -21,6 +23,7 @@ export function textFade({
 	duration = 0.25,
 	stagger = 0.0125,
 	ease = 'linear',
+	delay = 0,
 	...scroll
 }: TextFadeOptions = {}): Attachment<HTMLElement> {
 	return (el) => {
@@ -28,7 +31,7 @@ export function textFade({
 
 		return textScroll(el, type, scroll, ({ gsap, targets, scrollTrigger }) =>
 			gsap
-				.timeline({ scrollTrigger })
+				.timeline({ scrollTrigger, delay })
 				.fromTo(
 					style === 'random' ? gsap.utils.shuffle([...targets]) : targets,
 					{ opacity: 0 },

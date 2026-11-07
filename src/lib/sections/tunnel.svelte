@@ -20,6 +20,8 @@
 		};
 		/** The section's anchor, so a link or the CMS preview can point to `#id`. */
 		id?: string;
+		/** Skips the scroll motion, for the CMS preview. */
+		static?: boolean;
 		class?: string;
 	};
 </script>
@@ -39,6 +41,7 @@
 		reversed = false,
 		parallax,
 		id,
+		static: isStatic = false,
 		class: className
 	}: TunnelProps = $props();
 
@@ -54,7 +57,7 @@
 	// Everything is a ScrollTrigger tween, made in one context so leaving the page undoes it all. Sections are made
 	// in page order, which is what lets a trigger below a pinned one measure itself after the pin's spacer.
 	const motion: Attachment<HTMLElement> = (section) => {
-		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		if (isStatic || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
 		let cancelled = false;
 		let revert: (() => void) | undefined;
@@ -64,6 +67,12 @@
 			const pin = section.querySelector<HTMLElement>('.pin');
 			const media = section.querySelector<HTMLElement>('.media');
 			if (cancelled || !clip || !media) return;
+
+			const style = getComputedStyle(section);
+			const contentWidth = Math.min(
+				parseFloat(style.getPropertyValue('--content-width')),
+				section.clientWidth - parseFloat(style.getPropertyValue('--body-padding')) * 2
+			);
 
 			const context = gsap.context(() => {
 				if (centered && pin) {
@@ -86,7 +95,7 @@
 					});
 				} else if (reversed) {
 					gsap.to(clip, {
-						width: '80%',
+						width: contentWidth,
 						ease: 'none',
 						scrollTrigger: { trigger: section, start: 'top top', end: 'bottom 30%', scrub }
 					});
@@ -162,7 +171,7 @@
 	// The media is clipped by a box that the scroll resizes, so it looks like the picture opens up as you reach it.
 	.tunnel {
 		--section-height: 105svh;
-		--clip-width: 80%;
+		--clip-width: min(var(--content-width), 100% - var(--body-padding) * 2);
 		--clip-height: 50svh;
 		--clip-radius: var(--radius);
 

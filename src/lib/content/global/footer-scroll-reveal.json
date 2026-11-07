@@ -1,31 +1,26 @@
 {
-	"title": "Let’s build something great together",
+	"title": "Join us in the studio",
 	"cta": {
 		"primary": {
-			"text": "Get Started",
-			"textDescription": "Get started with axys creative",
-			"url": "https://axyscreative.com",
-			"newTab": true
+			"text": "Join a class",
+			"textDescription": "Join a class at Bonnie’s Dance School",
+			"url": "/contact",
+			"newTab": false
 		},
 		"secondary": {
-			"text": "View Style Guide",
-			"url": "/style-guide",
+			"text": "",
+			"url": "",
 			"newTab": false
 		}
 	},
-	"message": "Have a project in mind? Reach out and we will get back to you within a day.",
+	"message": "Questions about classes? Reach out and we will get back to you within a day.",
 	"bigLink": {
-		"text": "info@sample.com",
-		"textDescription": "Email us",
-		"url": "mailto:info@sample.com",
+		"text": "",
+		"textDescription": "",
+		"url": "",
 		"newTab": false
 	},
-	"showThemeToggle": true,
+	"showThemeToggle": false,
 	"copyright": "",
-	"credit": {
-		"text": "Made in collaboration with",
-		"linkText": "axys creative",
-		"url": "https://axyscreative.com"
-	},
 	"parallax": true
 }

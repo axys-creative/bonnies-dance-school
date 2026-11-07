@@ -2,9 +2,9 @@
 	import type { Attachment } from 'svelte/attachments';
 
 	export type VideoBgProps = {
-		/** The video file. Self-hosted or CDN files are best. */
+		/** The video file, a Mux playback ID or a Dropbox share link. Self-hosted or CDN files are best. */
 		src: string;
-		/** An image shown before the video plays. Best paired with `autoplay: false`. */
+		/** An image shown before the video plays. A Mux playback ID gets its thumbnail by default. */
 		poster?: string;
 		/** Starts playing on its own, muted and looping. Skipped when the visitor prefers reduced motion. */
 		autoplay?: boolean;
@@ -20,6 +20,7 @@
 </script>
 
 <script lang="ts">
+	import { isHls, videoPoster, videoUrl } from '$lib/utils/video-url';
 	import Icon from './icon.svelte';
 
 	let {
@@ -32,15 +33,46 @@
 		title = 'Background video'
 	}: VideoBgProps = $props();
 
+	const url = $derived(videoUrl(src));
+	const hls = $derived(isHls(url));
+	const posterUrl = $derived(poster ?? videoPoster(src));
+	const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 	let video = $state<HTMLVideoElement>();
 	let paused = $state(true);
+
+	// hls.js goes first: Chrome says "maybe" to native HLS but can't play it, so native playback is the fallback.
+	$effect(() => {
+		if (!video || !hls) return;
+		const element = video;
+		let cancelled = false;
+		let destroy: (() => void) | undefined;
+		import('hls.js').then(({ default: Hls }) => {
+			if (cancelled) return;
+			if (!Hls.isSupported()) {
+				element.src = url;
+				return;
+			}
+			const instance = new Hls();
+			instance.loadSource(url);
+			instance.attachMedia(element);
+			if (autoplay && !reduced()) {
+				instance.on(Hls.Events.MANIFEST_PARSED, () => element.play().catch(() => {}));
+			}
+			destroy = () => instance.destroy();
+		});
+		return () => {
+			cancelled = true;
+			destroy?.();
+		};
+	});
 
 	const toggle = () => (video?.paused ? video.play().catch(() => {}) : video?.pause());
 
 	// Starts it here rather than trusting the `autoplay` attribute, which browsers skip when it is set after the
 	// element is created.
 	const start: Attachment<HTMLVideoElement> = (el) => {
-		if (!autoplay || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		if (!autoplay || reduced()) return;
 		el.muted = true;
 		el.play().catch(() => {});
 	};
@@ -51,9 +83,9 @@
 		bind:this={video}
 		onplay={() => (paused = false)}
 		onpause={() => (paused = true)}
-		{src}
+		src={hls ? undefined : url}
 		{title}
-		poster={autoplay ? undefined : poster}
+		poster={posterUrl}
 		muted
 		loop={autoplay}
 		playsinline
@@ -149,13 +181,15 @@
 	}
 
 	.br {
-		right: var(--gap);
-		bottom: var(--gap);
+		bottom: var(--body-padding);
+
+		@include mixins.right-spacing;
 	}
 
 	.bl {
-		bottom: var(--gap);
-		left: var(--gap);
+		bottom: var(--body-padding);
+
+		@include mixins.left-spacing;
 	}
 
 	.tr {

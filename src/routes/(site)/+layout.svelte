@@ -8,10 +8,10 @@
 	import FooterSimple, { type FooterSimpleProps } from '$lib/components/footer-simple.svelte';
 	import PageTransition from '$lib/components/page-transition.svelte';
 	import ScrollProgress from '$lib/components/scroll-progress.svelte';
-	import SideShadows from '$lib/components/side-shadows.svelte';
 	import SmoothScroll from '$lib/components/smooth-scroll.svelte';
 	import HeaderBasic, { type HeaderBasicProps } from '$lib/components/header-basic.svelte';
 	import HeaderAbsolute, { type HeaderAbsoluteProps } from '$lib/components/header-absolute.svelte';
+	import HeaderLinks, { type HeaderLinksProps } from '$lib/components/header-links.svelte';
 	import HeaderIsland, { type HeaderIslandProps } from '$lib/components/header-island.svelte';
 	import HeaderSimple, { type HeaderSimpleProps } from '$lib/components/header-simple.svelte';
 	import logo from '$lib/content/global/logo.json';
@@ -23,6 +23,7 @@
 	import header from '$lib/content/global/header-simple.json';
 	import headerBasic from '$lib/content/global/header-basic.json';
 	import headerAbsolute from '$lib/content/global/header-absolute.json';
+	import headerLinks from '$lib/content/global/header-links.json';
 	import headerIsland from '$lib/content/global/header-island.json';
 	import navigation from '$lib/content/global/navigation.json';
 
@@ -44,6 +45,13 @@
 		<HeaderBasic
 			{...navigation as HeaderBasicProps}
 			{...headerBasic as HeaderBasicProps}
+			{logo}
+			socialLinks={social.links}
+		/>
+	{:else if site.headerTemplate === 'links'}
+		<HeaderLinks
+			{...navigation as HeaderLinksProps}
+			{...headerLinks as HeaderLinksProps}
 			{logo}
 			socialLinks={social.links}
 		/>
@@ -73,11 +81,10 @@
 			socialLinks={social.links}
 		/>
 	{:else}
-		<FooterSimple {...footer as FooterSimpleProps} {logo} socialLinks={social.links} />
+		<FooterSimple {...footer as FooterSimpleProps} socialLinks={social.links} />
 	{/if}
 </div>
 
-<SideShadows />
 <ScrollProgress />
 <AlertStack />
 

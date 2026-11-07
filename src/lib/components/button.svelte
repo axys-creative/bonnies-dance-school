@@ -27,6 +27,7 @@
 
 <script lang="ts">
 	import { isCurrentPage, onCurrentPageClick } from '$lib/utils/current-page';
+	import { roll } from '$lib/attachments/roll';
 	import Icon from './icon.svelte';
 
 	let {
@@ -54,7 +55,10 @@
 		textDescription && newTab ? `${textDescription} (opens in a new tab)` : textDescription
 	);
 	const onCurrentPage = $derived(!newTab && isCurrentPage(url));
-	const classes = $derived(`button ${type} ${size} ${text ? '' : 'icon-only'} ${className ?? ''}`);
+	const isLink = $derived(type === 'text' || type === 'underline');
+	const classes = $derived(
+		`button ${type} ${size} ${text ? '' : 'icon-only'} ${iconEnd && type === 'solid' ? 'has-end' : ''} ${className ?? ''}`
+	);
 </script>
 
 {#snippet content()}
@@ -81,6 +85,7 @@
 {#if url}
 	<a
 		{...rest}
+		{@attach isLink ? roll({ delay: 0.1 }) : undefined}
 		class={classes}
 		href={url}
 		aria-label={label}
@@ -96,6 +101,7 @@
 {:else}
 	<button
 		{...rest}
+		{@attach isLink ? roll({ delay: 0.1 }) : undefined}
 		class={classes}
 		type={htmlType}
 		aria-label={label}
@@ -157,6 +163,91 @@
 		@include mixins.desktop-hover {
 			background: transparent;
 			color: var(--color-accent-text);
+		}
+	}
+
+	// With an end icon the fill is a layer behind the content. On hover it narrows to a square at the right, around the
+	// icon, which then move together as one piece. Its minimum width, not its width, is what changes: the width is the
+	// height (aspect-ratio) once the minimum is gone.
+	.solid.has-end {
+		--py: 8px;
+		// How far the square and icon sit right of rest while hovered, so the square clears the last letter.
+		--shift: 12px;
+		--ease-cta: cubic-bezier(0.33, -0.22, 0.24, 1.44);
+
+		position: relative;
+		isolation: isolate;
+		padding-inline-end: calc(var(--py) + 0.1em);
+		border-color: transparent;
+		background: none;
+
+		&.sm {
+			--py: 6px;
+		}
+
+		&.lg {
+			--py: 12px;
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: -1;
+			height: 100%;
+			min-width: 100%;
+			aspect-ratio: 1;
+			border-radius: var(--radius-btn);
+			background: var(--color-accent);
+
+			@include mixins.mq-motion-allow {
+				transition:
+					min-width 0.75s var(--ease-cta),
+					translate 0.4s var(--ease-cta);
+			}
+		}
+
+		.end {
+			color: var(--color-on-accent);
+
+			@include mixins.mq-motion-allow {
+				transition: translate 0.4s var(--ease-cta);
+			}
+		}
+
+		@include mixins.desktop-hover {
+			background: none;
+
+			&::before {
+				min-width: 0;
+			}
+
+			&::before,
+			.end {
+				translate: var(--shift) 0;
+			}
+
+			// The square and the icon share one animation, so they move as a single piece: the width comes in and pushes
+			// them right, with a slight tilt, and they settle back.
+			@include mixins.mq-motion-allow {
+				&::before,
+				.end {
+					animation: push 1s var(--ease-cta) 0.2s;
+				}
+			}
+		}
+	}
+
+	@keyframes push {
+		35% {
+			translate: calc(var(--shift) + 5px) 0;
+			rotate: 8deg;
+		}
+
+		100% {
+			translate: var(--shift) 0;
+			rotate: 0deg;
 		}
 	}
 
@@ -222,38 +313,54 @@
 		scale: 1 -1;
 	}
 
-	.underline {
-		color: var(--color-text);
+	.underline,
+	.text {
+		--fill-y: 9px;
+		--fill-x: 17px;
 
-		.label::before {
+		position: relative;
+		isolation: isolate;
+
+		&.sm {
+			--fill-y: 7px;
+			--fill-x: 13px;
+		}
+
+		&.lg {
+			--fill-y: 13px;
+			--fill-x: 25px;
+		}
+
+		&::before {
 			content: '';
 			position: absolute;
-			inset: auto auto 0 0;
-			width: 100%;
-			height: 1px;
-			background: currentColor;
+			inset: calc(-1 * var(--fill-y)) calc(-1 * var(--fill-x));
+			z-index: -1;
+			border-radius: var(--radius-btn);
+			background: var(--color-secondary);
+			transform: scaleX(0);
+			transform-origin: left;
 
 			@include mixins.mq-motion-allow {
-				transition:
-					width var(--duration) var(--ease),
-					inset var(--duration) var(--ease);
+				transition: transform 0.5s var(--ease);
 			}
 		}
 
 		@include mixins.desktop-hover {
-			.label::before {
-				inset: auto 0 0 auto;
-				width: 0;
+			color: var(--color-on-accent);
+
+			&::before {
+				transform: scaleX(1);
 			}
 		}
 	}
 
+	.underline {
+		color: var(--color-text);
+	}
+
 	.text {
 		color: var(--color-accent-text);
-
-		@include mixins.desktop-hover {
-			color: var(--color-text);
-		}
 	}
 
 	.sm {

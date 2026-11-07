@@ -1,22 +1,20 @@
 <script module lang="ts">
-	import type { BackToTopProps } from './back-to-top.svelte';
 	import type { ButtonProps } from './button.svelte';
-	import type { LogoProps } from './logo.svelte';
 	import type { SocialLink } from './social-links.svelte';
 
 	export type FooterSimpleProps = {
-		logo?: LogoProps;
-		message?: string;
 		socialLinks?: SocialLink[];
-		/** Up to three columns of links. */
-		linksets?: { title?: string; links: ButtonProps[] }[];
+		/** The first column of links. */
+		menu?: { title?: string; links: ButtonProps[] };
+		contact?: { title?: string; email?: string; phone?: string };
+		/** The text repeated in the marquee. */
+		marquee?: string;
 		legalLinks?: ButtonProps[];
-		returnToTop?: BackToTopProps;
+		credit?: { text: string; url?: string };
 		copyright?: string;
 		showThemeToggle?: boolean;
 		includeTop?: boolean;
 		includeBottom?: boolean;
-		divider?: boolean;
 		float?: boolean;
 		/** A translucent, blurred background. */
 		blur?: boolean;
@@ -27,26 +25,23 @@
 
 <script lang="ts">
 	import { glass as glassEffect } from '$lib/attachments/glass';
-	import { roll } from '$lib/attachments/roll';
 	import site from '$lib/content/meta/site.json';
-	import BackToTop from './back-to-top.svelte';
-	import Logo from './logo.svelte';
+	import Marquee from './marquee.svelte';
 	import MenuLinks from './menu-links.svelte';
-	import SocialLinks from './social-links.svelte';
+	import Tag from './tag.svelte';
 	import ThemeToggle from './theme-toggle.svelte';
 
 	let {
-		logo,
-		message,
 		socialLinks = [],
-		linksets = [],
+		menu,
+		contact,
+		marquee,
 		legalLinks = [],
-		returnToTop,
+		credit,
 		copyright,
 		showThemeToggle = false,
 		includeTop = true,
 		includeBottom = true,
-		divider = true,
 		float = false,
 		blur = false,
 		glass = false
@@ -54,6 +49,20 @@
 
 	const copyrightText = $derived(
 		copyright || `© ${new Date().getFullYear()} ${site.siteName}. All rights reserved.`
+	);
+	const socials = $derived(
+		socialLinks.map(({ title, url }) => ({
+			text: title,
+			url,
+			newTab: true,
+			type: 'underline' as const
+		}))
+	);
+	const contactLinks = $derived(
+		[
+			contact?.email && { text: contact.email, url: `mailto:${contact.email}` },
+			contact?.phone && { text: contact.phone, url: `tel:${contact.phone.replace(/[^\d+]/g, '')}` }
+		].filter((link): link is { text: string; url: string } => !!link)
 	);
 </script>
 
@@ -63,156 +72,194 @@
 	class:blur={blur && !glass}
 	{@attach glass ? glassEffect() : undefined}
 >
-	<div class="inner">
-		{#if includeTop}
-			<div class="top">
-				<div class="top-left">
-					{#if logo}<Logo {...logo} url="/" />{/if}
-					{#if message}<p class="message">{message}</p>{/if}
-					<SocialLinks links={socialLinks} />
-				</div>
-
-				{#if linksets.length}
-					<div class="linksets">
-						{#each linksets.slice(0, 3) as { title, links } (title ?? links[0]?.url)}
-							<div class="linkset">
-								{#if title}<strong>{title}</strong>{/if}
-								<MenuLinks {links} label={title ?? 'Footer'} direction="column" />
-							</div>
-						{/each}
+	{#if includeTop}
+		<div class="top">
+			<div class="start">
+				{#if menu?.links.length}
+					<div class="column">
+						<Tag text={menu.title || 'Menu'} type="outline" />
+						<MenuLinks links={menu.links} label={menu.title || 'Menu'} direction="column" />
+					</div>
+				{/if}
+				{#if socials.length}
+					<div class="column">
+						<Tag text="Socials" type="outline" />
+						<MenuLinks links={socials} label="Social media" direction="column" />
 					</div>
 				{/if}
 			</div>
-		{/if}
 
-		{#if divider && includeTop && includeBottom}<hr />{/if}
+			{#if contactLinks.length}
+				<div class="column">
+					<Tag text={contact?.title || 'Contact'} type="outline" />
+					<MenuLinks links={contactLinks} label="Contact" direction="column" />
+				</div>
+			{/if}
+		</div>
+	{/if}
 
-		{#if includeBottom}
-			<div class="bottom">
-				<div class="bottom-start">
-					{#if returnToTop}<BackToTop {...returnToTop} {@attach roll()} />{/if}
-				</div>
-				<p class="copyright">{copyrightText}</p>
-				<div class="bottom-end">
-					<MenuLinks links={legalLinks} label="Legal" />
-					{#if showThemeToggle}<ThemeToggle />{/if}
-				</div>
+	{#if marquee}
+		<div class="wordmark full">
+			<Marquee text={marquee} speed={40} pauseOnHover />
+		</div>
+	{/if}
+
+	{#if includeBottom}
+		<div class="bottom">
+			<p class="copyright">{copyrightText}</p>
+			<div class="bottom-end">
+				{#if legalLinks.length}
+					<nav aria-label="Legal">
+						<ul>
+							{#each legalLinks as { text, url, newTab, textDescription } (url)}
+								<li>
+									<a
+										class="small-link"
+										href={url}
+										aria-label={textDescription}
+										target={newTab ? '_blank' : undefined}
+										rel={newTab ? 'noopener noreferrer' : undefined}>{text}</a
+									>
+								</li>
+							{/each}
+						</ul>
+					</nav>
+				{/if}
+				{#if credit?.text}
+					{#if credit.url}
+						<a class="small-link" href={credit.url} target="_blank" rel="noopener noreferrer">
+							{credit.text}<span class="visually-hidden"> (opens in a new tab)</span>
+						</a>
+					{:else}
+						<span class="credit">{credit.text}</span>
+					{/if}
+				{/if}
+				{#if showThemeToggle}<ThemeToggle />{/if}
 			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 </footer>
 
 <style lang="scss">
 	@use 'base/mixins';
 
 	.footer {
+		grid-template-rows: 1fr auto auto auto;
+		min-height: 100lvh;
 		margin-block-start: auto;
 		border-block-start: 1px solid var(--color-border);
 		background: var(--color-bg);
+		padding-block: 48px 24px;
 	}
 
 	.float {
+		grid-template-columns: [full-start content-start] 1fr [content-end full-end];
 		width: calc(100% - var(--float-offset) * 2);
 		max-width: var(--content-width);
+		min-height: calc(100lvh - var(--float-offset) * 2);
 		margin: auto auto var(--float-offset);
-		display: block;
+		padding-inline: var(--body-padding);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius);
+		overflow: clip;
 	}
 
 	.blur {
 		@include mixins.glass;
 	}
 
-	.inner {
-		padding-block: 48px;
-	}
-
-	.float .inner {
-		padding-inline: var(--body-padding);
-	}
-
 	.top {
+		grid-row: 2;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		gap: 48px;
 
-		@include mixins.min-lg {
+		@include mixins.min-md {
 			flex-direction: row;
 		}
 	}
 
-	.top-left {
+	.start {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 48px 64px;
+	}
+
+	.column {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 24px;
+		gap: 16px;
 	}
 
-	.message {
-		max-width: 420px;
-		color: var(--color-text-muted);
-	}
+	.wordmark {
+		grid-row: 3;
+		padding-block: 16px 48px;
 
-	.linksets {
-		display: grid;
-		grid-template-columns: repeat(3, max-content);
-		gap: 32px 64px;
-
-		@include mixins.max-md {
-			grid-template-columns: repeat(2, max-content);
+		.float & {
+			margin-inline: calc(var(--body-padding) * -1);
 		}
 
-		@include mixins.max-xs {
-			grid-template-columns: max-content;
+		:global(.marquee.marquee) {
+			@include mixins.h1;
+			font-size: clamp(56px, 12vw, 150px);
+			line-height: 1.5;
 		}
-	}
-
-	.linkset strong {
-		display: block;
-		margin-block-end: 12px;
-		color: var(--color-text-muted);
-	}
-
-	hr {
-		margin-block: 48px;
-		border: 0;
-		height: 1px;
-		background: var(--color-border);
 	}
 
 	.bottom {
+		grid-row: 4;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 24px;
+		justify-content: space-between;
+		gap: 16px;
 
-		@include mixins.min-xl {
-			display: grid;
-			grid-template-columns: 1fr auto 1fr;
+		@include mixins.min-md {
+			flex-direction: row;
 			align-items: center;
 		}
 	}
 
-	.copyright {
-		order: 1;
+	.copyright,
+	.small-link,
+	.credit {
 		color: var(--color-text-muted);
 		font-size: 14px;
-
-		@include mixins.min-xl {
-			order: 0;
-		}
 	}
 
-	.bottom-end {
+	.bottom-end,
+	.bottom-end ul {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 16px;
+		gap: 16px 24px;
+		padding: 0;
+		list-style: none;
+	}
 
-		@include mixins.min-xl {
-			justify-self: end;
+	.small-link {
+		background: linear-gradient(currentColor, currentColor) no-repeat right bottom / 0 1px;
+		padding-block-end: 2px;
+		text-decoration: none;
+
+		@include mixins.mq-motion-allow {
+			transition:
+				background-size 0.3s var(--ease),
+				color 0.3s var(--ease);
+		}
+
+		@include mixins.desktop-hover {
+			background-position: left bottom;
+			background-size: 100% 1px;
+			color: var(--color-text);
+		}
+
+		&:focus-visible {
+			background-position: left bottom;
+			background-size: 100% 1px;
+			color: var(--color-text);
 		}
 	}
 </style>

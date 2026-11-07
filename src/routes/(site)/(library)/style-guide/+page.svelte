@@ -508,10 +508,14 @@
 		props={logoProps}
 	>
 		<div class="row">
-			<Logo srcLight="/images/logo-black.svg" srcDark="/images/logo-white.svg" alt="axys" />
-			<Logo src="/images/logo-axys-icon-white.svg" text="Tinted with text" tint />
+			<Logo
+				srcLight="/images/logo-bonnies-dance-school.svg"
+				srcDark="/images/logo-bonnies-dance-school.svg"
+				alt="axys"
+			/>
+			<Logo src="/images/logo-bonnies-dance-school.svg" text="Tinted with text" tint />
 			<Logo text="Text only" />
-			<Logo src="/images/logo-axys-icon-white.svg" alt="axys" tint />
+			<Logo src="/images/logo-bonnies-dance-school.svg" alt="axys" tint />
 		</div>
 	</LibrarySection>
 

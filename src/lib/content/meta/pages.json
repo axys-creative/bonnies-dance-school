@@ -3,69 +3,27 @@
 		{
 			"path": "/",
 			"title": "Home",
-			"description": "",
+			"description": "Dance classes for every age and level at Bonnie’s Dance School, in a studio that feels like home.",
+			"ogImage": "",
+			"crawlPage": true
+		},
+		{
+			"path": "/about",
+			"title": "About",
+			"description": "About Bonnie’s Dance School: who we are and what we believe about dance.",
 			"ogImage": "",
 			"crawlPage": true
 		},
 		{
 			"path": "/blog",
 			"title": "Blog",
-			"description": "",
+			"description": "News, tips and stories from Bonnie’s Dance School.",
 			"ogImage": "",
 			"crawlPage": true
 		},
 		{
 			"path": "/style-guide",
 			"title": "Style Guide",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/advanced",
-			"title": "Advanced",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/components",
-			"title": "Components",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/attachments",
-			"title": "Attachments",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/combos",
-			"title": "Combos",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/intros",
-			"title": "Intros",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/sections",
-			"title": "Sections",
-			"description": "",
-			"ogImage": "",
-			"crawlPage": false
-		},
-		{
-			"path": "/transitions",
-			"title": "Transitions",
 			"description": "",
 			"ogImage": "",
 			"crawlPage": false

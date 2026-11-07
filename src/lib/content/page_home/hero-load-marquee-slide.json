@@ -1,0 +1,27 @@
+{
+	"heading": {
+		"before": "Find your",
+		"words": ["rhythm", "beat", "movement", "groove", "joy"],
+		"after": "at Bonnie’s"
+	},
+	"video": "D75rNlWbDwnVaMR7NI8seTA00tXqudJBZxbJ32uMEnug",
+	"textTheme": "dark",
+	"overlay": 0,
+	"description": "Classes for every age and level, in a studio that feels like home.",
+	"cta": {
+		"primary": {
+			"text": "Join a class",
+			"textDescription": "Join a class at Bonnie’s Dance School",
+			"url": "/",
+			"newTab": false,
+			"iconEnd": ""
+		},
+		"secondary": {
+			"text": "",
+			"textDescription": "",
+			"url": "",
+			"newTab": false,
+			"iconEnd": ""
+		}
+	}
+}

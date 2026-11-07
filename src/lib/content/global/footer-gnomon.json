@@ -1,10 +1,10 @@
 {
-	"title": "Let’s build something great together",
+	"title": "Join us in the studio",
 	"cta": {
-		"text": "Get Started",
-		"textDescription": "Get started with axys creative",
-		"url": "https://axyscreative.com",
-		"newTab": true,
+		"text": "Join a class",
+		"textDescription": "Join a class at Bonnie’s Dance School",
+		"url": "/contact",
+		"newTab": false,
 		"type": "outline"
 	},
 	"linksets": [
@@ -25,61 +25,6 @@
 					"text": "Style Guide",
 					"url": "/style-guide",
 					"newTab": false
-				}
-			]
-		},
-		{
-			"title": "Library",
-			"links": [
-				{
-					"text": "Advanced",
-					"url": "/advanced",
-					"newTab": false
-				},
-				{
-					"text": "Attachments",
-					"url": "/attachments",
-					"newTab": false
-				},
-				{
-					"text": "Components",
-					"url": "/components",
-					"newTab": false
-				},
-				{
-					"text": "Combos",
-					"url": "/combos",
-					"newTab": false
-				},
-				{
-					"text": "Intros",
-					"url": "/intros",
-					"newTab": false
-				},
-				{
-					"text": "Sections",
-					"url": "/sections",
-					"newTab": false
-				},
-				{
-					"text": "Transitions",
-					"url": "/transitions",
-					"newTab": false
-				}
-			]
-		},
-		{
-			"title": "axys creative",
-			"links": [
-				{
-					"text": "Website",
-					"url": "https://axyscreative.com",
-					"newTab": true
-				},
-				{
-					"text": "Tokens",
-					"url": "https://axyscreative.com/tokens",
-					"newTab": true
 				}
 			]
 		}

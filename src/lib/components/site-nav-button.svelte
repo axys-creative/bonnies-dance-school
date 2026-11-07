@@ -15,8 +15,6 @@
 </script>
 
 <script lang="ts">
-	import { magnet } from '$lib/attachments/magnet';
-
 	let {
 		symbol = 'burger',
 		shape = 'square',
@@ -46,23 +44,12 @@
 	aria-controls={controls}
 >
 	{#if text}<span class="text">{text}</span>{/if}
-	<span
-		class="magnet"
-		{@attach magnet({
-			x: 1,
-			y: 1,
-			followDuration: 500,
-			returnDuration: 350,
-			returnEase: 'cubic-bezier(0, 1.64, 0.63, 1.92)'
-		})}
-	>
-		<span class="icon {symbol} {shape}" aria-hidden="true">
-			{#if symbol === 'stairs'}
-				<span class="lines">{@render lines()}</span>
-			{:else}
-				{@render lines()}
-			{/if}
-		</span>
+	<span class="icon {symbol} {shape}" aria-hidden="true">
+		{#if symbol === 'stairs'}
+			<span class="lines">{@render lines()}</span>
+		{:else}
+			{@render lines()}
+		{/if}
 	</span>
 </button>
 
@@ -98,10 +85,6 @@
 		&:active .icon {
 			scale: 0.98;
 		}
-	}
-
-	.magnet {
-		display: flex;
 	}
 
 	.text {

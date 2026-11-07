@@ -1,16 +1,13 @@
-$font-heading: 'Funnel Display', system-ui, sans-serif;
-$font-body: 'Funnel Display', system-ui, sans-serif;
-$font-mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+$font-heading: 'Special Gothic Expanded', system-ui, sans-serif;
+$font-body: 'Outfit', system-ui, sans-serif;
+$font-mono: ui-monospace, Menlo, monospace;
 
-$black: #0a0a0a;
-$grey-darker: #1a1a1a;
-$grey-dark: #292929;
-$grey-light: #ececec;
-$grey-lighter: #f1f1f1;
-$white: #fafafa;
-$coral: #e48c66;
-$blue: #ada4e3;
-$green: #a4d1a2;
+$light: #fef2f2;
+$dark: #2d2d2d;
+$taupe: #e4c2c1;
+$plum: #b6666f;
+$maroon: #c8204c;
+$tan: #d1a080;
 
 // `--display-light` and `--display-dark` are the `display` of an element shown only in that theme (a logo file).
 @mixin dark-tokens {
@@ -18,12 +15,12 @@ $green: #a4d1a2;
 	--display-light: none;
 	--display-dark: block;
 
-	--color-bg: #{$black};
-	--color-surface: #{$grey-darker};
-	--color-text: #{$white};
-	--color-text-muted: #{$grey-light};
-	--color-border: #{$grey-dark};
-	--color-accent-text: #{$coral};
+	--color-bg: #{$dark};
+	--color-surface: #{color-mix(in srgb, $dark, $light 8%)};
+	--color-text: #{$light};
+	--color-text-muted: #{$taupe};
+	--color-border: #{color-mix(in srgb, $dark, $light 18%)};
+	--color-accent-text: #{$taupe};
 	--color-error: #dc143c;
 	--color-glass: rgb(0 0 0 / 0.25);
 }
@@ -33,12 +30,12 @@ $green: #a4d1a2;
 	--display-light: block;
 	--display-dark: none;
 
-	--color-bg: #{$white};
-	--color-surface: #{$grey-lighter};
-	--color-text: #{$black};
-	--color-text-muted: #{$grey-dark};
-	--color-border: #{$grey-light};
-	--color-accent-text: #b3501f;
+	--color-bg: #{$light};
+	--color-surface: #{color-mix(in srgb, $light, $taupe 35%)};
+	--color-text: #{$dark};
+	--color-text-muted: #{$dark};
+	--color-border: #{$taupe};
+	--color-accent-text: #{$maroon};
 	--color-error: #dc143c;
 	--color-glass: rgb(255 255 255 / 0.25);
 }
@@ -67,19 +64,19 @@ $green: #a4d1a2;
 }
 
 :root {
-	@include dark-tokens;
+	@include light-tokens;
 
 	--font-heading: #{$font-heading};
 	--font-body: #{$font-body};
 	--font-mono: #{$font-mono};
 
-	--color-accent: #{$coral};
+	--color-accent: #{$maroon};
 	// Text and icons on an accent background are the same in both themes.
-	--color-on-accent: #{$white};
-	--color-secondary: #{$blue};
-	--color-tertiary: #{$green};
-	--color-success: #{$green};
-	--color-info: #{$blue};
+	--color-on-accent: #{$light};
+	--color-secondary: #{$plum};
+	--color-tertiary: #{$tan};
+	--color-success: #6fae6c;
+	--color-info: #{$taupe};
 	--color-warning: #e8b84f;
 
 	--content-width: 1280px;
@@ -92,6 +89,7 @@ $green: #a4d1a2;
 	--radius: 8px;
 	--radius-btn: 4px;
 
+	--text-body: 16px;
 	--btn-font-size: 16px;
 	--btn-font-weight: 500;
 	--btn-padding: 8px 16px;
@@ -119,6 +117,13 @@ $green: #a4d1a2;
 	--transition-scale: scale var(--duration) var(--ease);
 }
 
+@media (min-width: 1024px) {
+	:root {
+		--text-body: 20px;
+		--btn-font-size: 18px;
+	}
+}
+
 @media (max-width: 1152px) {
 	:root {
 		--body-padding: 48px;
@@ -132,17 +137,6 @@ $green: #a4d1a2;
 	}
 }
 
-// Without JS, follow the OS; the inline script in app.html sets data-theme otherwise.
-@media (prefers-color-scheme: light) {
-	:root:not([data-theme]) {
-		@include light-tokens;
-	}
-}
-
-:root[data-theme='light'] {
-	@include light-tokens;
-}
-
 :root[data-theme='dark'] {
-	color-scheme: dark;
+	@include dark-tokens;
 }

@@ -22,7 +22,7 @@ export type CursorContent = {
 	icon?: string | true;
 	iconSize?: 'sm' | 'md' | 'lg';
 	iconColor?: string;
-	/** A picture shown inside the cursor, e.g. `/images/img-sample-1.jpg`. */
+	/** A picture shown inside the cursor, e.g. `/images/sample-dance-landscape-1.jpg`. */
 	image?: string;
 	/** Whether the picture sits over the cursor's message and icon (`front`) or under them (`behind`, the default). */
 	imageLayer?: 'front' | 'behind';

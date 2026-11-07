@@ -1,6 +1,12 @@
 import type { Component } from 'svelte';
 import globalCss from '../../styles/styles.scss?inline';
 import CarouselSpotlight from '$lib/sections/carousel-spotlight.svelte';
+import Tunnel from '$lib/sections/tunnel.svelte';
+import HeadlineJumbled from '$lib/sections/headline-jumbled.svelte';
+import HeroLoadMarqueeSlide from '$lib/sections/hero-load-marquee-slide.svelte';
+import CopySplit from '$lib/sections/copy-split.svelte';
+import HeroAbout from '$lib/sections/hero-about.svelte';
+import ImageHalf from '$lib/sections/image-half.svelte';
 import HeroSimple from '$lib/sections/hero-simple.svelte';
 import { mountPreview, type PreviewHost } from './preview-host.svelte';
 
@@ -33,6 +39,30 @@ const previews: Record<string, Preview> = {
 			};
 		}
 	},
+	tunnel: {
+		component: Tunnel as unknown as Section,
+		props: (data) => ({ ...data, static: true })
+	},
+	headline_jumbled: {
+		component: HeadlineJumbled as unknown as Section,
+		props: (data) => ({ ...data, lines: data.lines ?? [], static: true })
+	},
+	hero_load_marquee_slide: {
+		component: HeroLoadMarqueeSlide as unknown as Section,
+		props: (data) => {
+			const cta = (data.cta ?? {}) as { primary?: unknown; secondary?: { text?: string } };
+			const heading = (data.heading ?? {}) as { before?: string; words?: string[]; after?: string };
+			return {
+				...data,
+				words: [heading.before ?? '', heading.words ?? [], heading.after ?? ''],
+				cta: { ...cta, secondary: cta.secondary?.text ? cta.secondary : undefined },
+				static: true
+			};
+		}
+	},
+	hero_about: { component: HeroAbout as unknown as Section },
+	image_half: { component: ImageHalf as unknown as Section },
+	copy_split: { component: CopySplit as unknown as Section },
 	hero_simple: {
 		component: HeroSimple as unknown as Section,
 		props: (data) => {

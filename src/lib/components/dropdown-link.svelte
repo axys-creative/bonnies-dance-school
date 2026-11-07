@@ -102,7 +102,7 @@
 	>
 		<ul class="list">
 			{#each links as link (`${link.url}|${link.text}`)}
-				<li><Button {...link} type={link.type ?? 'text'} {@attach roll()} /></li>
+				<li><Button {...link} type={link.type ?? 'text'} /></li>
 			{/each}
 		</ul>
 	</div>

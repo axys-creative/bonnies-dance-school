@@ -25,7 +25,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { glitchHover } from '$lib/attachments/glitch-hover';
-	import { roll } from '$lib/attachments/roll';
 	import site from '$lib/content/meta/site.json';
 	import { loadGsap, refreshScrollTriggers } from '$lib/utils/gsap';
 	import Button from './button.svelte';
@@ -113,7 +112,7 @@
 				{#if message}<p class="message">{message}</p>{/if}
 				{#if bigLink?.text}
 					<div class="big-link">
-						<Button {...bigLink} type="underline" {@attach roll()} />
+						<Button {...bigLink} type="underline" />
 					</div>
 				{/if}
 			</div>

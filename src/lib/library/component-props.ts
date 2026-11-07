@@ -1312,6 +1312,7 @@ export const tunnelProps = props(
 		'parallax',
 		'An object of `{ offset, scrub }`. `offset` is how far the media starts from rest, as a CSS translate such as `-75%` (the default). `scrub` is the seconds the motion takes to catch up with the scroll, and `0` (the default) plays it once when it is reached.'
 	],
+	['static', 'A boolean. Skips the scroll motion, for the CMS preview. Defaults to `false`.'],
 	['class', 'A string of extra classes, such as `full` on a Library page.']
 );
 
@@ -1331,6 +1332,23 @@ export const headlineProps = props(
 		'A boolean. At least the height of the screen, with the statement centered. Taller content still grows past it. Defaults to `false`.'
 	],
 	['class', 'A string of extra classes.']
+);
+
+export const headlineJumbledProps = props(
+	[
+		'lines',
+		'An array of `{ text, indent }`, one per line of the statement. `text` takes Rich Text tokens. `indent` is how far the line starts from the left, as a percentage of the width (`0` by default). Together the lines read as one sentence. Below `md` they run together as a paragraph. Required.'
+	],
+	[
+		'size',
+		'A string, any CSS length for the font size. Defaults to a size that fits the longest indented line from `md` (`3.6cqw`, at most 64px) and `clamp(32px, 6vw, 56px)` below.'
+	],
+	[
+		'fullScreen',
+		'A boolean. At least the height of the screen, with the statement centered. Taller content still grows past it. Defaults to `false`.'
+	],
+	['static', 'A boolean. Skips the reveal, for the CMS preview. Defaults to `false`.'],
+	['class', 'A string of extra classes, such as `full` on a Library page.']
 );
 
 export const planSelectionProps = props(
@@ -1474,15 +1492,27 @@ export const heroLoadMarqueeSlideProps = props(
 	],
 	[
 		'size',
-		'A string, any CSS length for the font size of the words. Defaults to `clamp(72px, 15vw, 180px)`.'
+		'A string, any CSS length for the font size of the words. Defaults to `clamp(56px, 12vw, 150px)`.'
 	],
 	[
 		'divider',
 		"A string, the mark between the looping words (and after the last, before it starts over), so the line does not read as a sentence. It is muted and fades in with the words. Any text works, e.g. `'·'`, `'/'` or `'✦'`; an empty string shows none. Defaults to `'·'`."
 	],
 	[
+		'textTheme',
+		"`'light'` or `'dark'`, the color of the text over the video. A scrim of the opposite color sits between them. Defaults to `'light'`."
+	],
+	[
+		'overlay',
+		'A number from `0` to `100`, how strong the scrim over the video is. Defaults to `40`.'
+	],
+	[
 		'speed',
 		'A number, pixels per second the middle line slides once its first word has revealed. Defaults to `120`.'
+	],
+	[
+		'video',
+		'A string, a Mux playback ID or a video URL. Plays muted and looping behind the section (`video-bg.svelte`). Optional.'
 	],
 	[
 		'fullScreen',
@@ -1515,6 +1545,30 @@ export const heroLoadSlideProps = props(
 	[
 		'static',
 		'A boolean. Skips the reveal and the slide, for the CMS preview. Defaults to `false`.'
+	],
+	['class', 'A string of extra classes, such as `full` on a Library page.']
+);
+
+export const heroLoadSpreadProps = props(
+	[
+		'description, cta',
+		'The copy and buttons under the last line. They fade in once the lines have revealed. `cta` is `{ primary, secondary }`, as in Section Copy.'
+	],
+	[
+		'words',
+		'An array of strings, one per line, each stepped in from the one above. Together they make the page heading. Required.'
+	],
+	[
+		'size',
+		'A string, any CSS length for the font size of the words. Defaults to `clamp(40px, 8vw, 140px)`.'
+	],
+	[
+		'fullScreen',
+		'A boolean. At least the height of the screen. Taller content still grows past it. Defaults to `true`.'
+	],
+	[
+		'static',
+		'A boolean. Skips the reveal and shows the final layout, for the CMS preview. Defaults to `false`.'
 	],
 	['class', 'A string of extra classes, such as `full` on a Library page.']
 );

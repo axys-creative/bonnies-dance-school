@@ -96,49 +96,86 @@
 			"label": "Page - Home",
 			"files": [
 				{
-					"name": "hero_simple",
+					"name": "hero_load_marquee_slide",
 					"label": "Hero",
-					"file": "src/lib/content/page_home/hero-simple.json",
+					"file": "src/lib/content/page_home/hero-load-marquee-slide.json",
 					"preview_path": "#hero",
 					"fields": [
 						{
-							"name": "eyebrowText",
-							"label": "Eyebrow text",
+							"name": "heading",
+							"label": "Heading",
+							"widget": "object",
+							"collapsed": true,
+							"summary": "{{fields.before}} … {{fields.after}}",
+							"fields": [
+								{
+									"name": "before",
+									"label": "First line",
+									"widget": "string",
+									"hint": "The line above the sliding words."
+								},
+								{
+									"name": "words",
+									"label": "Sliding words",
+									"widget": "list",
+									"min": 1,
+									"field": {
+										"name": "word",
+										"label": "Word",
+										"widget": "string"
+									},
+									"hint": "The middle line. The first is revealed in place, then the line slides across the page as a marquee and the rest fade in."
+								},
+								{
+									"name": "after",
+									"label": "Last line",
+									"widget": "string",
+									"hint": "The line below the sliding words."
+								}
+							]
+						},
+						{
+							"name": "video",
+							"label": "Background video",
 							"widget": "string",
-							"required": false
-						},
-						{
-							"name": "eyebrowIcon",
-							"label": "Eyebrow icon",
-							"widget": "image",
 							"required": false,
-							"hint": "An SVG icon; it takes the eyebrow color."
+							"hint": "A Mux playback ID (the Playback ID, not the Asset ID) or a video URL. Plays muted and looping behind the section."
 						},
 						{
-							"name": "eyebrowDot",
-							"label": "Eyebrow status dot",
+							"name": "textTheme",
+							"label": "Text color over the video",
 							"widget": "select",
 							"options": [
-								{ "label": "None", "value": "none" },
-								{ "label": "Pulse", "value": "pulse" },
-								{ "label": "Sonar", "value": "sonar" }
+								{
+									"label": "Light text (for dark videos)",
+									"value": "light"
+								},
+								{
+									"label": "Dark text (for light videos)",
+									"value": "dark"
+								}
 							],
-							"default": "none",
+							"default": "light",
 							"required": false,
-							"hint": "A green dot before the eyebrow, such as for \"available for freelance\"."
+							"hint": "Light text gets a dark scrim, dark text a light one. Only applies with a background video."
 						},
 						{
-							"name": "title",
-							"label": "Title",
-							"widget": "string",
-							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+							"name": "overlay",
+							"label": "Overlay strength",
+							"widget": "number",
+							"value_type": "int",
+							"min": 0,
+							"max": 90,
+							"default": 40,
+							"required": false,
+							"hint": "How strong the scrim is, 0 to 90. Raise it if the text is hard to read over a busy or bright video."
 						},
 						{
 							"name": "description",
 							"label": "Description",
 							"widget": "text",
 							"required": false,
-							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+							"hint": "Sits beside the first line. Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
 						},
 						{
 							"name": "cta",
@@ -228,23 +265,147 @@
 									]
 								}
 							]
+						}
+					]
+				},
+				{
+					"name": "headline_jumbled",
+					"label": "Headline",
+					"file": "src/lib/content/page_home/headline-jumbled.json",
+					"preview_path": "#headline",
+					"fields": [
+						{
+							"name": "lines",
+							"label": "Lines",
+							"widget": "list",
+							"summary": "{{fields.text}}",
+							"hint": "The statement, a line at a time. Together they read as one sentence. Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens",
+							"fields": [
+								{
+									"name": "text",
+									"label": "Text",
+									"widget": "string"
+								},
+								{
+									"name": "indent",
+									"label": "Indent",
+									"widget": "number",
+									"value_type": "int",
+									"min": 0,
+									"max": 70,
+									"default": 0,
+									"required": false,
+									"hint": "How far the line starts from the left, as a percentage of the width. Below the medium breakpoint the lines run together."
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "tunnel",
+					"label": "Tunnel",
+					"file": "src/lib/content/page_home/tunnel.json",
+					"preview_path": "#tunnel",
+					"fields": [
+						{
+							"name": "img",
+							"label": "Image",
+							"widget": "object",
+							"fields": [
+								{
+									"name": "src",
+									"label": "Image",
+									"widget": "image"
+								},
+								{
+									"name": "alt",
+									"label": "Alt text",
+									"widget": "string",
+									"required": false,
+									"hint": "Describe the picture for screen readers. Leave empty if it is only decoration."
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "page_about",
+			"label": "Page - About",
+			"files": [
+				{
+					"name": "hero_about",
+					"label": "Hero",
+					"file": "src/lib/content/page_about/hero-about.json",
+					"preview_path": "about#hero",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
 						},
 						{
-							"name": "layout",
-							"label": "Layout",
-							"widget": "select",
-							"options": ["column", "row"],
-							"default": "column",
-							"required": false,
-							"hint": "Row puts the description beside the title on wider screens."
-						},
-						{
-							"name": "align",
-							"label": "Alignment",
-							"widget": "select",
-							"options": ["start", "center"],
-							"default": "center",
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
 							"required": false
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				},
+				{
+					"name": "image_half",
+					"label": "Image",
+					"file": "src/lib/content/page_about/image-half.json",
+					"preview_path": "about#image",
+					"fields": [
+						{
+							"name": "img",
+							"label": "Image",
+							"widget": "object",
+							"fields": [
+								{
+									"name": "src",
+									"label": "Image",
+									"widget": "image"
+								},
+								{
+									"name": "alt",
+									"label": "Alt text",
+									"widget": "string",
+									"required": false,
+									"hint": "Describe the picture for screen readers. Leave empty if it is only decoration."
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "copy_split",
+					"label": "Eyebrow and description",
+					"file": "src/lib/content/page_about/copy-split.json",
+					"preview_path": "about#approach",
+					"fields": [
+						{
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
+							"required": false
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
 						}
 					]
 				}
@@ -403,9 +564,18 @@
 							"label": "Eyebrow status dot",
 							"widget": "select",
 							"options": [
-								{ "label": "None", "value": "none" },
-								{ "label": "Pulse", "value": "pulse" },
-								{ "label": "Sonar", "value": "sonar" }
+								{
+									"label": "None",
+									"value": "none"
+								},
+								{
+									"label": "Pulse",
+									"value": "pulse"
+								},
+								{
+									"label": "Sonar",
+									"value": "sonar"
+								}
 							],
 							"default": "none",
 							"required": false,
@@ -1212,6 +1382,45 @@
 					]
 				},
 				{
+					"name": "header_links",
+					"label": "Header (links)",
+					"file": "src/lib/content/global/header-links.json",
+					"fields": [
+						{
+							"name": "position",
+							"label": "Position",
+							"widget": "select",
+							"options": [
+								{
+									"label": "Fixed (stays on screen)",
+									"value": "fixed"
+								},
+								{
+									"label": "Absolute (scrolls away with the page)",
+									"value": "absolute"
+								}
+							],
+							"default": "fixed"
+						},
+						{
+							"name": "blend",
+							"label": "Invert colors over the page",
+							"widget": "boolean",
+							"default": true,
+							"required": false,
+							"hint": "Keeps the links readable over any picture or color."
+						},
+						{
+							"name": "showSkipLink",
+							"label": "Show skip to content link",
+							"widget": "boolean",
+							"default": true,
+							"required": false,
+							"hint": "Accessibility. Leave on."
+						}
+					]
+				},
+				{
 					"name": "header_basic",
 					"label": "Header (basic)",
 					"file": "src/lib/content/global/header-basic.json",
@@ -1368,13 +1577,6 @@
 							"required": false
 						},
 						{
-							"name": "divider",
-							"label": "Show divider",
-							"widget": "boolean",
-							"default": true,
-							"required": false
-						},
-						{
 							"name": "showThemeToggle",
 							"label": "Show theme toggle",
 							"widget": "boolean",
@@ -1382,17 +1584,10 @@
 							"required": false
 						},
 						{
-							"name": "message",
-							"label": "Message",
-							"widget": "text",
-							"required": false
-						},
-						{
-							"name": "linksets",
-							"label": "Link columns",
-							"widget": "list",
-							"label_singular": "Column",
-							"summary": "{{fields.title}}",
+							"name": "menu",
+							"label": "Menu column",
+							"widget": "object",
+							"required": false,
 							"fields": [
 								{
 									"name": "title",
@@ -1434,65 +1629,41 @@
 										}
 									]
 								}
-							],
-							"max": 3,
-							"min": 1,
-							"hint": "Up to three columns of links, each with its own title."
+							]
 						},
 						{
-							"name": "returnToTop",
-							"label": "Return to top button",
+							"name": "contact",
+							"label": "Contact column",
 							"widget": "object",
 							"required": false,
+							"hint": "Shown at the far right. The social links get their own column from Social media.",
 							"fields": [
 								{
-									"name": "text",
-									"label": "Text",
-									"widget": "string"
-								},
-								{
-									"name": "url",
-									"label": "URL",
+									"name": "title",
+									"label": "Title",
 									"widget": "string",
-									"hint": "Page path (/about), anchor (#contact), or full URL."
-								},
-								{
-									"name": "newTab",
-									"label": "Open in new tab",
-									"widget": "boolean",
-									"default": false,
 									"required": false
 								},
 								{
-									"name": "textDescription",
-									"label": "Accessible description",
+									"name": "email",
+									"label": "Email",
 									"widget": "string",
-									"required": false,
-									"hint": "Optional aria-label for screen readers"
-								},
-								{
-									"name": "type",
-									"label": "Style",
-									"widget": "select",
-									"options": ["solid", "outline", "underline", "text"],
-									"default": "underline",
 									"required": false
 								},
 								{
-									"name": "iconStart",
-									"label": "Icon before text",
+									"name": "phone",
+									"label": "Phone",
 									"widget": "string",
-									"required": false,
-									"hint": "Icon file name without .svg (e.g. chevron-right). See /style-guide for examples."
-								},
-								{
-									"name": "iconEnd",
-									"label": "Icon after text",
-									"widget": "string",
-									"required": false,
-									"hint": "Icon file name without .svg (e.g. chevron-right). See /style-guide for examples."
+									"required": false
 								}
 							]
+						},
+						{
+							"name": "marquee",
+							"label": "Marquee text",
+							"widget": "string",
+							"required": false,
+							"hint": "Repeats across the footer in the heading style."
 						},
 						{
 							"name": "legalLinks",
@@ -1525,6 +1696,25 @@
 									"widget": "string",
 									"required": false,
 									"hint": "Optional aria-label for screen readers"
+								}
+							]
+						},
+						{
+							"name": "credit",
+							"label": "Credit",
+							"widget": "object",
+							"required": false,
+							"fields": [
+								{
+									"name": "text",
+									"label": "Text",
+									"widget": "string"
+								},
+								{
+									"name": "url",
+									"label": "URL",
+									"widget": "string",
+									"required": false
 								}
 							]
 						},
@@ -1996,6 +2186,10 @@
 								{
 									"label": "Basic",
 									"value": "basic"
+								},
+								{
+									"label": "Links",
+									"value": "links"
 								}
 							],
 							"default": "simple",

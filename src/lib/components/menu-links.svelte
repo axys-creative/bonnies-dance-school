@@ -69,7 +69,12 @@
 							triggerAttach={linkAttach}
 						/>
 					{:else}
-						<Button {...link} type={link.type ?? type} {@attach roll()} {@attach linkAttach} />
+						<Button
+							{...link}
+							type={link.type ?? type}
+							{@attach ['text', 'underline'].includes(link.type ?? type) ? undefined : roll()}
+							{@attach linkAttach}
+						/>
 					{/if}
 				</li>
 			{/each}
