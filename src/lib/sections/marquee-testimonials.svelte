@@ -40,7 +40,7 @@
 
 <section {id} class="marquee-testimonials {className ?? ''}" class:full-screen={fullScreen}>
 	<div class="inner">
-		<div class="header"><SectionCopy {...copy} /></div>
+		<div class="header"><SectionCopy layout="row" rowAlign="center" {...copy} /></div>
 
 		<Marquee {label} {speed} {scrub} pauseOnHover class="reviews">
 			<div class="cards">

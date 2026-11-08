@@ -11,6 +11,7 @@
 
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
+	import { glass } from '$lib/attachments/glass';
 	import { roll } from '$lib/attachments/roll';
 	import { themeFollow } from '$lib/attachments/theme-follow';
 	import Button from './button.svelte';
@@ -35,6 +36,7 @@
 
 	let open = $state(false);
 	let bar = $state<HTMLElement>();
+	let scrolled = $state(false);
 
 	const close = () => (open = false);
 
@@ -45,6 +47,16 @@
 	};
 
 	afterNavigate(close);
+
+	const GLASS_AFTER = 64;
+
+	$effect(() => {
+		if (position !== 'fixed') return;
+		const update = () => (scrolled = scrollY > GLASS_AFTER);
+		update();
+		addEventListener('scroll', update, { passive: true });
+		return () => removeEventListener('scroll', update);
+	});
 </script>
 
 <svelte:window onkeydown={onKeydown} />
@@ -52,6 +64,10 @@
 <header class="header {position}" class:blend data-nav-open={open || undefined} data-header-parts>
 	{#if showSkipLink}
 		<a class="skip-link" href="#main">Skip to main content</a>
+	{/if}
+
+	{#if position === 'fixed'}
+		<div class="backdrop" class:scrolled {@attach glass({ blur: 16 })}></div>
 	{/if}
 
 	{#if logo}
@@ -84,7 +100,7 @@
 	@use 'base/mixins';
 
 	.header {
-		--top: 20px;
+		--top: 28px;
 
 		top: 0;
 		left: 0;
@@ -94,7 +110,7 @@
 		pointer-events: none;
 
 		@include mixins.min-lg {
-			--top: 32px;
+			--top: 36px;
 		}
 	}
 
@@ -109,6 +125,36 @@
 	.blend {
 		color: #fff;
 		mix-blend-mode: difference;
+	}
+
+	// A floating bar behind the logo and links that appears once the page has scrolled, centered on their line.
+	.backdrop {
+		position: absolute;
+		top: var(--float-offset);
+		left: 50%;
+		width: min(100% - var(--float-offset) * 2, var(--content-width) + 48px);
+		height: calc((var(--top) + 17px - var(--float-offset)) * 2);
+		border-radius: var(--radius);
+		translate: -50% 0;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+
+		@include mixins.mq-motion-allow {
+			transition:
+				opacity 0.3s var(--ease),
+				visibility 0.3s;
+		}
+
+		&.scrolled {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
+	.header[data-nav-open] .backdrop {
+		opacity: 0;
+		visibility: hidden;
 	}
 
 	// Centered on the line of the links and the button, which are shorter than the logo.

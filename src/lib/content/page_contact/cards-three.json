@@ -1,0 +1,26 @@
+{
+	"title": "Let's talk",
+	"cards": [
+		{
+			"icon": "/uploads/card-sun.svg",
+			"title": "Email us",
+			"description": "Questions about classes, schedules or tuition? Send us a note and we will reply within a day or two.",
+			"link": {
+				"text": "bonniesdanceschool@gmail.com",
+				"url": "mailto:bonniesdanceschool@gmail.com"
+			}
+		},
+		{
+			"icon": "/uploads/card-flower.svg",
+			"title": "Call us",
+			"description": "Prefer to talk it through? Give the studio a call and we will help you find the right class.",
+			"link": { "text": "801-513-6972", "url": "tel:8015136972" }
+		},
+		{
+			"icon": "/uploads/card-diamond.svg",
+			"title": "Join a class",
+			"description": "Ready to dance? Pick a class and register online, or try one first.",
+			"link": { "text": "Join a class", "url": "/join" }
+		}
+	]
+}

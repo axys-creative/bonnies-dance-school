@@ -23,6 +23,8 @@ $tan: #d1a080;
 	--color-accent-text: #{$taupe};
 	--color-error: #dc143c;
 	--color-glass: rgb(0 0 0 / 0.25);
+	--color-link-fill: #{$light};
+	--color-link-fill-text: #{$dark};
 }
 
 @mixin light-tokens {
@@ -38,6 +40,8 @@ $tan: #d1a080;
 	--color-accent-text: #{$maroon};
 	--color-error: #dc143c;
 	--color-glass: rgb(255 255 255 / 0.25);
+	--color-link-fill: #{$plum};
+	--color-link-fill-text: #{$light};
 }
 
 // A theme for the element it is included in. The page is always light, so `invert` is dark.

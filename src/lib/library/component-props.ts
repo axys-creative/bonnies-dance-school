@@ -863,6 +863,10 @@ export const accordionProps = props(
 		"Which items start open: `true` for all, an item's number (from `0`), or a list such as `[0, 2]`. With `singleOpen` only the first opens. An item can also set `defaultOpen: true` itself. Defaults to none."
 	],
 	[
+		'highlight',
+		'A boolean. A primary-colored shape follows the hovered or keyboard-focused title, bending in the direction it moves between items (mouse devices only; it jumps without motion). Defaults to `false`.'
+	],
+	[
 		'toggleAll',
 		'A boolean. Shows a button that opens or closes every item; it reads "Close All" once all are open and goes back to "Open All" only when all are closed. Ignored with `singleOpen`. Defaults to `false`.'
 	],
@@ -998,7 +1002,10 @@ export const richTextProps = props(
 		'text',
 		'A string. `[words]{.primary}` styles the words, `[words]{.primary .scribble}` combines classes, and `{.br}` is a line break. Anything else, including `<` and `&`, is shown as typed. Required.'
 	],
-	['.h1', 'The size and style of a Heading 1. `.h2` to `.h6` match their headings.'],
+	[
+		'.h1',
+		'The size and style of a Heading 1. `.h2` to `.h6` match their headings; an H2 is capped at 64px.'
+	],
 	['.italic', 'Italic.'],
 	['.primary', 'The brand accent color.'],
 	[
@@ -1358,7 +1365,7 @@ export const cardsThreeProps = props(
 	],
 	[
 		'cards',
-		'An array of up to three `{ title, description }`. The title is an H3 and the description takes Rich Text tokens. Side by side from `md`, stacked below. Required.'
+		'An array of up to three `{ icon, title, description, link }`. The title is an H3, the description takes Rich Text tokens, and `link` is `{ text, url, newTab }`, an underline link at the bottom of the card. Side by side from `md`, stacked below. Required.'
 	],
 	[
 		'fullScreen',
@@ -1663,6 +1670,7 @@ export const typographyTokens = props(
 		'.h1 to .h6',
 		'Heading styles for any element, so the visual size and the heading level can differ.'
 	],
+	['.headline', 'A display size for the footer wordmark and other oversized type, up to 180px.'],
 	['.body, .body-large, .body-small', 'Body text sizes.']
 );
 

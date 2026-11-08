@@ -1,6 +1,6 @@
 {
-	"srcLight": "/images/logo-bonnies-dance-school.svg",
-	"srcDark": "/images/logo-bonnies-dance-school.svg",
+	"src": "/images/logo-bonnies-dance-school.svg",
+	"tint": true,
 	"text": "",
 	"alt": "Bonnie’s Dance School"
 }

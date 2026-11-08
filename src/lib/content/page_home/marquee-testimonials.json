@@ -1,5 +1,6 @@
 {
-	"title": "Recent reviews",
+	"title": "Recent{.br}reviews",
+	"description": "Kind words from the dancers and families who call our studio home. We’d love to hear from you too, so tell us about your experience and share what dancing here has meant for your family.",
 	"cta": {
 		"primary": {
 			"text": "View all reviews",

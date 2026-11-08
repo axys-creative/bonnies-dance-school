@@ -26,6 +26,8 @@
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { onMount, tick } from 'svelte';
+	import { cubicOut } from 'svelte/easing';
+	import { fade, slide } from 'svelte/transition';
 	import Button from '$lib/components/button.svelte';
 	import FormChoice from '$lib/components/form-choice.svelte';
 	import FormField from '$lib/components/form-field.svelte';
@@ -44,7 +46,7 @@
 		class: className
 	}: RegistrationFormProps = $props();
 
-	const MAX_STUDENTS = 4;
+	const MAX_STUDENTS = 10;
 	const students = Array.from({ length: MAX_STUDENTS }, (_, index) => index + 1);
 	const MAX_CONTACTS = 6;
 	const contacts = Array.from({ length: MAX_CONTACTS }, (_, index) => index + 1);
@@ -79,6 +81,26 @@
 			return false;
 		}
 		return true;
+	}
+
+	const motion = (ms: number) =>
+		typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches
+			? 0
+			: ms;
+
+	function removeLast(kind: 'students' | 'contacts') {
+		const count = kind === 'students' ? studentCount : contactCount;
+		const group = form?.querySelectorAll<HTMLElement>(
+			`[data-step="${kind === 'students' ? 0 : 1}"] .student`
+		)[count - 1];
+		for (const field of group?.querySelectorAll<HTMLInputElement>('input, textarea, select') ??
+			[]) {
+			field.value = '';
+			field.dispatchEvent(new Event('input', { bubbles: true }));
+		}
+		errors = {};
+		if (kind === 'students') studentCount -= 1;
+		else contactCount -= 1;
 	}
 
 	async function go(to: number) {
@@ -298,26 +320,58 @@
 				</fieldset>
 
 				<div class="actions">
-					{#if step === 0 && studentCount < MAX_STUDENTS}
-						<Button
-							class="add"
-							text="Add student"
-							type="solid"
-							tone="tertiary"
-							iconStart="plus"
-							onclick={() => (studentCount += 1)}
-						/>
-					{/if}
-					{#if step === 1 && contactCount < MAX_CONTACTS}
-						<Button
-							class="add"
-							text="Add contact"
-							type="solid"
-							tone="tertiary"
-							iconStart="plus"
-							onclick={() => (contactCount += 1)}
-						/>
-					{/if}
+					<div class="adders">
+						{#if step === 0 && studentCount > 1}
+							<div
+								class="remove"
+								transition:slide={{ axis: 'x', duration: motion(300), easing: cubicOut }}
+							>
+								<div transition:fade={{ duration: motion(300) }}>
+									<Button
+										text="Remove student"
+										type="solid"
+										tone="tertiary"
+										onclick={() => removeLast('students')}
+									/>
+								</div>
+							</div>
+						{/if}
+						{#if step === 0 && studentCount < MAX_STUDENTS}
+							<div class="add" transition:fade={{ duration: motion(300) }}>
+								<Button
+									text="Add student"
+									type="text"
+									iconEnd="plus"
+									onclick={() => (studentCount += 1)}
+								/>
+							</div>
+						{/if}
+						{#if step === 1 && contactCount > 1}
+							<div
+								class="remove"
+								transition:slide={{ axis: 'x', duration: motion(300), easing: cubicOut }}
+							>
+								<div transition:fade={{ duration: motion(300) }}>
+									<Button
+										text="Remove contact"
+										type="solid"
+										tone="tertiary"
+										onclick={() => removeLast('contacts')}
+									/>
+								</div>
+							</div>
+						{/if}
+						{#if step === 1 && contactCount < MAX_CONTACTS}
+							<div class="add" transition:fade={{ duration: motion(300) }}>
+								<Button
+									text="Add contact"
+									type="text"
+									iconEnd="plus"
+									onclick={() => (contactCount += 1)}
+								/>
+							</div>
+						{/if}
+					</div>
 					{#if step > 0}
 						<Button text="Back" type="underline" onclick={() => go(step - 1)} />
 					{/if}
@@ -474,6 +528,10 @@
 		flex-direction: column;
 		gap: 8px;
 
+		& + & {
+			margin-top: 32px;
+		}
+
 		&[hidden] {
 			display: none;
 		}
@@ -496,8 +554,21 @@
 		}
 	}
 
-	.actions :global(.add) {
+	.adders {
+		display: flex;
+		align-items: center;
 		margin-inline-end: auto;
+	}
+
+	// A text button's square sits 17px left of its label, so the square, not the label, lines up with the form edge.
+	.add {
+		margin-inline-start: 17px;
+	}
+
+	.remove {
+		display: flex;
+		margin-inline-end: 16px;
+		white-space: nowrap;
 	}
 
 	.policies {

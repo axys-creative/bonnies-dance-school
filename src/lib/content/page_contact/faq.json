@@ -1,0 +1,27 @@
+{
+	"eyebrowText": "Good to know",
+	"title": "Frequently asked [questions]{.primary}",
+	"description": "Can't find what you're looking for? Send us a note and we'll help.",
+	"items": [
+		{
+			"title": "What age groups do you teach?",
+			"content": "We teach dancers from toddlers through teens, with classes grouped by age and experience so everyone learns alongside their peers."
+		},
+		{
+			"title": "Does my child need any experience?",
+			"content": "None at all. Our beginner classes are built for first-time dancers, and we'll help you find the right level."
+		},
+		{
+			"title": "What should we wear to class?",
+			"content": "Comfortable clothes that are easy to move in. Dance shoes and uniform details are shared once you're enrolled."
+		},
+		{
+			"title": "Can we try a class before joining?",
+			"content": "Yes. Get in touch and we'll arrange a trial class so you can see the studio and meet the teachers."
+		},
+		{
+			"title": "How do I pay for classes?",
+			"content": "Tuition is billed monthly. We'll walk you through the options when you register."
+		}
+	]
+}

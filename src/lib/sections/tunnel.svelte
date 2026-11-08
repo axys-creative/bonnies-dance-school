@@ -232,7 +232,7 @@
 	}
 
 	.message {
-		@include mixins.h1;
+		@include mixins.heading(clamp(36px, 11.5vw, 56px), 1.1);
 
 		max-width: var(--content-width);
 		margin: 0 auto;

@@ -210,6 +210,7 @@
 		props={typographyTokens}
 		propsLabel="props"
 	>
+		<p class="headline">Headline</p>
 		<p class="h1">Heading 1</p>
 		<p class="h2">Heading 2</p>
 		<p class="h3">Heading 3</p>

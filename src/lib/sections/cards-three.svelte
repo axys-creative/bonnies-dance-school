@@ -1,7 +1,13 @@
 <script module lang="ts">
 	export type CardsThreeProps = Pick<SectionCopyProps, 'eyebrowText' | 'eyebrowIcon' | 'title'> & {
 		/** Up to three cards, side by side from `md`. */
-		cards: { icon?: string; title: string; description?: string }[];
+		cards: {
+			icon?: string;
+			title: string;
+			description?: string;
+			/** A link at the bottom of the card. */
+			link?: { text?: string; url?: string; newTab?: boolean };
+		}[];
 		/** At least the height of the screen, with the content centered. Taller content still grows past it. */
 		fullScreen?: boolean;
 		/** The section's anchor, so a link or the CMS preview can point to `#id`. */
@@ -16,6 +22,7 @@
 	import { browser } from '$app/environment';
 	import type { Attachment } from 'svelte/attachments';
 	import { animate } from '$lib/attachments/animate';
+	import Button from '$lib/components/button.svelte';
 	import Icon from '$lib/components/icon.svelte';
 	import RichText from '$lib/components/rich-text.svelte';
 	import Tag from '$lib/components/tag.svelte';
@@ -109,6 +116,9 @@
 					</div>
 					<h3 class="h5">{card.title}</h3>
 					{#if card.description}<p><RichText text={card.description} /></p>{/if}
+					{#if card.link?.text && card.link.url}
+						<div class="link"><Button {...card.link} type="underline" /></div>
+					{/if}
 				</li>
 			{/each}
 		</ul>
@@ -203,6 +213,12 @@
 
 		h3 {
 			margin: 0;
+		}
+
+		// The link's square sits 17px left of its text; this puts the square on the card's padding edge.
+		.link {
+			margin-block-start: auto;
+			padding-inline-start: 17px;
 		}
 
 		p {

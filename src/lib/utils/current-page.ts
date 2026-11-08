@@ -10,4 +10,8 @@ export function onCurrentPageClick(event: MouseEvent) {
 	if (event.defaultPrevented || event.button !== 0) return;
 	if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 	event.preventDefault();
+	const handled = !document.dispatchEvent(new CustomEvent('scroll-to-top', { cancelable: true }));
+	if (handled) return;
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
 }

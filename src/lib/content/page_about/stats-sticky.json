@@ -1,0 +1,9 @@
+{
+	"title": "Experience you{.br}can count on",
+	"description": "Decades of dancing and teaching, and a studio full of dancers who keep coming back.",
+	"stats": [
+		{ "digit": 30, "suffix": "+", "label": "years of dancing experience" },
+		{ "digit": 15, "suffix": "+", "label": "years of teaching experience" },
+		{ "digit": 1000, "suffix": "+", "label": "happy dancers" }
+	]
+}

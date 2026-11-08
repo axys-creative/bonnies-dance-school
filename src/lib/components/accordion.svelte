@@ -16,6 +16,8 @@
 		singleOpen?: boolean;
 		/** Which items start open: `true` for all, an item's number (from 0), or a list of them. With `singleOpen` only the first opens. */
 		defaultOpen?: boolean | number | number[];
+		/** A primary-colored shape that follows the hovered title, bending in the direction it moves between items. */
+		highlight?: boolean;
 		/** A button that opens or closes every item. Ignored with `singleOpen`. */
 		toggleAll?: boolean;
 		toggleAllTextOpen?: string;
@@ -24,6 +26,7 @@
 </script>
 
 <script lang="ts">
+	import { accordionHighlight } from '$lib/attachments/accordion-highlight';
 	import { createDisclosure, startingOpen } from '$lib/utils/disclosure.svelte';
 	import Button from './button.svelte';
 	import Icon from './icon.svelte';
@@ -35,6 +38,7 @@
 		plus = false,
 		singleOpen = false,
 		defaultOpen = false,
+		highlight = false,
 		toggleAll = false,
 		toggleAllTextOpen = 'Open All',
 		toggleAllTextClose = 'Close All'
@@ -55,7 +59,7 @@
 	});
 </script>
 
-<div class="accordion" {id}>
+<div class="accordion" {id} {@attach highlight ? accordionHighlight() : undefined}>
 	{#if toggleAll && !singleOpen}
 		<Button
 			text={allExpanded ? toggleAllTextClose : toggleAllTextOpen}
@@ -176,6 +180,8 @@
 	}
 
 	.plus {
+		--icon-size: 1.75ch;
+
 		position: relative;
 		width: var(--icon-size);
 		height: var(--icon-size);
@@ -184,7 +190,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			width: 1.25ch;
+			width: 50%;
 			height: 2px;
 			background: currentColor;
 			translate: -50% -50%;

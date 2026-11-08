@@ -475,6 +475,11 @@
 		}
 	}
 
+	// The link's square sits 17px left of its text; this puts the square on the content edge.
+	.left-links :global(.menu-links) {
+		padding-inline-start: 17px;
+	}
+
 	.footer {
 		display: flex;
 		flex-direction: column;
@@ -513,6 +518,44 @@
 
 		@include mixins.min-md {
 			flex-direction: row;
+		}
+	}
+
+	// The left variant: the background rises from the bottom like the page transition's frame, then the content fades up.
+	.left {
+		opacity: 1;
+		clip-path: inset(100% 0 0 0);
+
+		@include mixins.mq-motion-allow {
+			transition:
+				clip-path 0.8s cubic-bezier(0.6, 0, 0.07, 1),
+				visibility 0.8s;
+		}
+
+		&.open {
+			clip-path: inset(0);
+		}
+	}
+
+	.left .left-wrap {
+		opacity: 0;
+		translate: 0 48px;
+
+		@include mixins.mq-motion-allow {
+			transition:
+				opacity 0.3s ease,
+				translate 0.3s ease;
+		}
+	}
+
+	.left.open .left-wrap {
+		opacity: 1;
+		translate: 0 0;
+
+		@include mixins.mq-motion-allow {
+			transition:
+				opacity 0.6s ease 0.35s,
+				translate 0.8s cubic-bezier(0.6, 0, 0.07, 1) 0.35s;
 		}
 	}
 

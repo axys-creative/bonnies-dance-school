@@ -16,5 +16,5 @@
 	"faviconLight": "/images/favicon-light-theme.svg",
 	"faviconDark": "/images/favicon-dark-theme.svg",
 	"description": "Bonnie’s Dance School offers dance classes for every age and level, in a studio that feels like home.",
-	"ogImage": ""
+	"ogImage": "/images/og-image.png"
 }

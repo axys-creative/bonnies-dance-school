@@ -9,9 +9,11 @@ import CarouselSpotlight from '$lib/sections/carousel-spotlight.svelte';
 import Tunnel from '$lib/sections/tunnel.svelte';
 import HeadlineJumbled from '$lib/sections/headline-jumbled.svelte';
 import HeroLoadMarqueeSlide from '$lib/sections/hero-load-marquee-slide.svelte';
+import StatsSticky from '$lib/sections/stats-sticky.svelte';
 import CopySplit from '$lib/sections/copy-split.svelte';
 import HeroAbout from '$lib/sections/hero-about.svelte';
 import ImageHalf from '$lib/sections/image-half.svelte';
+import Faq from '$lib/sections/faq.svelte';
 import HeroSimple from '$lib/sections/hero-simple.svelte';
 import { mountPreview, type PreviewHost } from './preview-host.svelte';
 
@@ -100,6 +102,14 @@ const previews: Record<string, Preview> = {
 	hero_about: { component: HeroAbout as unknown as Section },
 	image_half: { component: ImageHalf as unknown as Section },
 	copy_split: { component: CopySplit as unknown as Section },
+	stats_sticky: {
+		component: StatsSticky as unknown as Section,
+		props: (data) => ({ ...data, stats: data.stats ?? [], static: true })
+	},
+	faq: {
+		component: Faq as unknown as Section,
+		props: (data) => ({ ...data, items: data.items ?? [], static: true })
+	},
 	hero_simple: {
 		component: HeroSimple as unknown as Section,
 		props: (data) => {

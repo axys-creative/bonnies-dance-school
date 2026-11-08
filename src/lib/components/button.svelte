@@ -374,7 +374,7 @@
 			height: var(--dot);
 			translate: 0 -50%;
 			border-radius: 2px;
-			background: var(--color-secondary);
+			background: var(--color-link-fill);
 
 			@include mixins.mq-motion-allow {
 				transition:
@@ -394,7 +394,7 @@
 		}
 
 		@include mixins.desktop-hover {
-			color: var(--color-on-accent);
+			color: var(--color-link-fill-text);
 
 			&::before {
 				left: calc(-1 * var(--fill-x));

@@ -51,7 +51,6 @@
 		{#if title}
 			<svelte:element
 				this={`h${level}`}
-				class="h2"
 				data-reveal
 				{@attach headingReveal(level === 1 ? {} : { delay: 0, once: false })}
 			>

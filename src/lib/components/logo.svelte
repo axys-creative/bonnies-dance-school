@@ -25,7 +25,9 @@
 		{#if srcLight}<img class="themed light" src={srcLight} alt={text ? '' : alt} />{/if}
 		{#if srcDark}<img class="themed dark" src={srcDark} alt={text ? '' : alt} />{/if}
 	{:else if src && tint}
-		<span class="mark" style="mask-image: url('{src}')" aria-hidden="true"></span>
+		<span class="mark" style="mask-image: url('{src}')" aria-hidden="true">
+			<img class="themed" {src} alt="" />
+		</span>
 	{:else if src}
 		<img {src} alt={text ? '' : alt} />
 	{/if}
@@ -73,18 +75,24 @@
 		display: var(--display-dark, block);
 	}
 
-	img:not(.themed),
-	.mark {
+	img:not(.themed) {
 		width: var(--logo-size);
 		height: var(--logo-size);
 		object-fit: contain;
 	}
 
+	// The hidden picture only gives the mask its size; the color is the text color.
 	.mark {
 		display: block;
+		width: fit-content;
 		background: currentColor;
 		mask-size: contain;
 		mask-repeat: no-repeat;
 		mask-position: center;
+
+		img {
+			display: block;
+			visibility: hidden;
+		}
 	}
 </style>

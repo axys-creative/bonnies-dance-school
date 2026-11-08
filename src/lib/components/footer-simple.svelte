@@ -206,16 +206,19 @@
 		margin-block-start: auto;
 	}
 
-	// A tan surface in the dark theme, with light copy.
 	.footer {
 		--color-text-muted: var(--color-text);
 		--color-accent-text: var(--color-text);
 
 		grid-template-rows: 1fr auto auto auto;
 		min-height: 100lvh;
-		background: variables.$tan;
+		background: variables.$plum;
 		color: var(--color-text);
-		padding-block: 48px 24px;
+		padding-block: 128px 24px;
+
+		@include mixins.min-md {
+			padding-block-start: 48px;
+		}
 	}
 
 	.float {
@@ -248,8 +251,13 @@
 
 	.start {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
 		gap: 48px 64px;
+
+		@include mixins.min-md {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
 	}
 
 	.column {
@@ -261,6 +269,11 @@
 		// The same inline padding as the number tags on the cards.
 		:global(.tag) {
 			padding-inline: 16px;
+		}
+
+		// The link's square sits 17px left of its text; this puts the square on the column's edge.
+		:global(.menu-links) {
+			padding-inline-start: 17px;
 		}
 	}
 
@@ -278,8 +291,7 @@
 
 		:global(.marquee.marquee) {
 			padding-inline-start: max(var(--body-padding), (100% - var(--content-width)) / 2);
-			@include mixins.h1;
-			font-size: clamp(56px, 12vw, 180px);
+			@include mixins.headline;
 			line-height: 1.5;
 		}
 	}
@@ -307,6 +319,15 @@
 
 	.bottom-end {
 		--btn-font-size: 14px;
+
+		// The link's square sits 17px left of its text; this puts the square on the content edge.
+		> :global(nav) {
+			padding-inline-start: 17px;
+		}
+
+		> :global(.button:first-child) {
+			margin-inline-start: 17px;
+		}
 
 		li {
 			display: flex;

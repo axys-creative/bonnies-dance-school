@@ -32,6 +32,10 @@ h1,
 	@include mixins.h1;
 }
 
+.headline {
+	@include mixins.headline;
+}
+
 h2,
 .h2 {
 	@include mixins.h2;

@@ -1,0 +1,32 @@
+.accordion-highlight {
+	position: relative;
+	isolation: isolate;
+}
+
+.accordion-highlight-shape {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	fill: var(--color-accent);
+	pointer-events: none;
+}
+
+.accordion-highlight .heading > button {
+	padding-inline: 16px;
+
+	@media (prefers-reduced-motion: no-preference) {
+		transition: color 0.3s var(--ease);
+	}
+
+	&[data-active] {
+		color: var(--color-on-accent);
+	}
+}
+
+.accordion-highlight [role='region'] {
+	padding-inline: 16px;
+}

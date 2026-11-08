@@ -30,9 +30,17 @@
 		};
 		document.addEventListener('click', onClick);
 
+		const onScrollTop = (event: Event) => {
+			if (!lenis) return;
+			event.preventDefault();
+			lenis.scrollTo(0);
+		};
+		document.addEventListener('scroll-to-top', onScrollTop);
+
 		return () => {
 			destroyed = true;
 			document.removeEventListener('click', onClick);
+			document.removeEventListener('scroll-to-top', onScrollTop);
 			lenis?.destroy();
 		};
 	});

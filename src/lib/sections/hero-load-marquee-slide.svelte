@@ -64,6 +64,7 @@
 	const ROW_DELAY = 0.15;
 	const HOLD = 0.1;
 	const DRIFT = 120;
+	const VIDEO_LEAD = 0.75;
 
 	// Seconds until the last letter of the last row has landed.
 	const revealTime = $derived(
@@ -78,6 +79,7 @@
 	let section = $state<HTMLElement>();
 	let shown = $state(false);
 	let sliding = $state(false);
+	let opened = $state(false);
 	let videoPaused = $state(false);
 	// How far the last row can move right before it meets the content edge; the middle row sits halfway.
 	let slack = $state(0);
@@ -138,13 +140,19 @@
 		if (isStatic || !loading.done) return;
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			shown = true;
+			opened = true;
 			return;
 		}
 
 		let timer: ReturnType<typeof setTimeout>;
+		let openTimer: ReturnType<typeof setTimeout>;
 		const watch = new IntersectionObserver(([entry]) => {
 			if (!entry.isIntersecting) return;
 			watch.disconnect();
+			openTimer = setTimeout(
+				() => (opened = true),
+				Math.max(0, revealTime + HOLD - VIDEO_LEAD) * 1000
+			);
 			timer = setTimeout(
 				() => {
 					sliding = true;
@@ -158,6 +166,7 @@
 		return () => {
 			watch.disconnect();
 			clearTimeout(timer);
+			clearTimeout(openTimer);
 		};
 	});
 </script>
@@ -170,7 +179,7 @@
 	class:theme-dark={video && textTheme === 'light'}
 	class:theme-light={video && textTheme === 'dark'}
 	class:full-screen={fullScreen}
-	class:revealed={shown || isStatic}
+	class:revealed={opened || isStatic}
 	style="--size: {size}; --overlay: {overlay}; --indent-2: {slack / 2}px; --indent-3: {slack}px"
 >
 	{#if copy.eyebrowText || copy.eyebrowIcon}
@@ -326,7 +335,7 @@
 	}
 
 	.full-screen {
-		min-height: 100lvh;
+		min-height: 100svh;
 		justify-content: center;
 	}
 

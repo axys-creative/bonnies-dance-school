@@ -366,6 +366,27 @@
 									"widget": "text",
 									"required": false,
 									"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+								},
+								{
+									"name": "link",
+									"label": "Link",
+									"widget": "object",
+									"required": false,
+									"fields": [
+										{
+											"name": "text",
+											"label": "Text",
+											"widget": "string",
+											"required": false
+										},
+										{
+											"name": "url",
+											"label": "URL",
+											"widget": "string",
+											"required": false,
+											"hint": "A page like /join, or mailto:, tel: or a full address."
+										}
+									]
 								}
 							]
 						}
@@ -478,6 +499,13 @@
 							"label": "Title",
 							"widget": "string",
 							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Sits beside the title. Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
 						},
 						{
 							"name": "cta",
@@ -612,6 +640,58 @@
 					]
 				},
 				{
+					"name": "stats_sticky",
+					"label": "Stats",
+					"file": "src/lib/content/page_about/stats-sticky.json",
+					"preview_path": "about#stats",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Sits under the title. Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "stats",
+							"label": "Stats",
+							"widget": "list",
+							"min": 1,
+							"summary": "{{fields.digit}}{{fields.suffix}} {{fields.label}}",
+							"hint": "Shown in a column beside the title.",
+							"fields": [
+								{
+									"name": "digit",
+									"label": "Number",
+									"widget": "number",
+									"value_type": "int",
+									"min": 0,
+									"hint": "A thousand or more gets a comma."
+								},
+								{
+									"name": "suffix",
+									"label": "After the number",
+									"widget": "string",
+									"required": false,
+									"hint": "For example +"
+								},
+								{
+									"name": "label",
+									"label": "Label",
+									"widget": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "testimonials_grid",
 					"label": "All reviews",
 					"file": "src/lib/content/page_about/testimonials-grid.json",
@@ -655,6 +735,118 @@
 							"widget": "text",
 							"required": false,
 							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						}
+					]
+				},
+				{
+					"name": "cards_three",
+					"label": "Ways to reach us",
+					"file": "src/lib/content/page_contact/cards-three.json",
+					"preview_path": "contact#contact-cards",
+					"fields": [
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "cards",
+							"label": "Cards",
+							"widget": "list",
+							"min": 1,
+							"max": 3,
+							"summary": "{{fields.title}}",
+							"fields": [
+								{
+									"name": "icon",
+									"label": "Icon",
+									"widget": "image",
+									"required": false,
+									"hint": "An SVG. It is drawn in the text color."
+								},
+								{
+									"name": "title",
+									"label": "Title",
+									"widget": "string"
+								},
+								{
+									"name": "description",
+									"label": "Copy",
+									"widget": "text",
+									"required": false,
+									"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+								},
+								{
+									"name": "link",
+									"label": "Link",
+									"widget": "object",
+									"required": false,
+									"fields": [
+										{
+											"name": "text",
+											"label": "Text",
+											"widget": "string",
+											"required": false
+										},
+										{
+											"name": "url",
+											"label": "URL",
+											"widget": "string",
+											"required": false,
+											"hint": "A page like /join, or mailto:, tel: or a full address."
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "faq",
+					"label": "FAQ",
+					"file": "src/lib/content/page_contact/faq.json",
+					"preview_path": "contact#faq",
+					"fields": [
+						{
+							"name": "eyebrowText",
+							"label": "Eyebrow text",
+							"widget": "string",
+							"required": false
+						},
+						{
+							"name": "title",
+							"label": "Title",
+							"widget": "string",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "description",
+							"label": "Description",
+							"widget": "text",
+							"required": false,
+							"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+						},
+						{
+							"name": "items",
+							"label": "Questions",
+							"widget": "list",
+							"required": false,
+							"summary": "{{fields.title}}",
+							"fields": [
+								{
+									"name": "title",
+									"label": "Question",
+									"widget": "string"
+								},
+								{
+									"name": "content",
+									"label": "Answer",
+									"widget": "text",
+									"hint": "Style words with [words]{.class}. Syntax and class list: axyscreative.com/tokens"
+								}
+							]
 						}
 					]
 				}
