@@ -325,7 +325,7 @@
 			padding-inline-start: 17px;
 		}
 
-		> :global(.button:first-child) {
+		> :global(.button) {
 			margin-inline-start: 17px;
 		}
 

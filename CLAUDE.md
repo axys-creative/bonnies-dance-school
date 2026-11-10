@@ -1,4 +1,4 @@
-# axys-template
+# Bonnie's Dance School (from axys-template)
 
 SvelteKit (Svelte 5 runes, TypeScript) + SCSS + JSON content, edited through Decap CMS, hosted on Netlify. Package manager is bun. This is a copy-once template: sites keep what they use and delete the rest, so every feature must be removable by deleting its own files.
 

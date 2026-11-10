@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { roll } from '$lib/attachments/roll';
 	import Button, { type ButtonProps } from './button.svelte';
 
 	type Props = {
@@ -11,7 +12,9 @@
 </script>
 
 <div class="cta-group {justify}">
-	<Button {...primary} iconEnd={primary.iconEnd || 'arrow-tr'} type="solid" />
+	{#key primary.text}
+		<Button {...primary} iconEnd={primary.iconEnd || 'arrow-tr'} type="solid" {@attach roll()} />
+	{/key}
 	{#if secondary}
 		<Button {...secondary} type="text" />
 	{/if}

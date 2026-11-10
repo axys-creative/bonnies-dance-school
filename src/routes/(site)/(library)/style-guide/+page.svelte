@@ -512,11 +512,11 @@
 			<Logo
 				srcLight="/images/logo-bonnies-dance-school.svg"
 				srcDark="/images/logo-bonnies-dance-school.svg"
-				alt="axys"
+				alt="Bonnie’s Dance School"
 			/>
 			<Logo src="/images/logo-bonnies-dance-school.svg" text="Tinted with text" tint />
 			<Logo text="Text only" />
-			<Logo src="/images/logo-bonnies-dance-school.svg" alt="axys" tint />
+			<Logo src="/images/logo-bonnies-dance-school.svg" alt="Bonnie’s Dance School" tint />
 		</div>
 	</LibrarySection>
 

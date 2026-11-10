@@ -5,6 +5,7 @@
 </script>
 
 <script lang="ts">
+	import { paperGrain } from '$lib/attachments/paper-grain';
 	import { imageProps } from '$lib/utils/image';
 	import RichText from './rich-text.svelte';
 	import Tag from './tag.svelte';
@@ -12,7 +13,7 @@
 	let { quote, name, role, image, class: className }: TestimonialCardProps = $props();
 </script>
 
-<figure class="testimonial-card {className ?? ''}">
+<figure class="testimonial-card {className ?? ''}" {@attach paperGrain({ variant: 'flecks' })}>
 	<blockquote><p><RichText text={quote} /></p></blockquote>
 	<figcaption>
 		{#if image?.src}

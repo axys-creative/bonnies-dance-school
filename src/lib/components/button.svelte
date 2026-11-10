@@ -18,6 +18,8 @@
 		controls?: string;
 		iconStart?: string;
 		iconEnd?: string;
+		/** A solid button's fill rolls up out of the top on hover and back down on leaving. */
+		drop?: boolean;
 		/** Draws a ring around the end icon on hover. */
 		iconCircle?: boolean;
 		/** An attachment for the end icon alone, e.g. `magnet()` to make only the icon follow the mouse. */
@@ -47,6 +49,7 @@
 		controls,
 		iconStart,
 		iconEnd,
+		drop = false,
 		iconCircle = false,
 		iconEndAttach,
 		class: className,
@@ -60,7 +63,7 @@
 	const onCurrentPage = $derived(!newTab && isCurrentPage(url));
 	const isLink = $derived(type === 'text' || type === 'underline');
 	const classes = $derived(
-		`button ${type} ${tone === 'primary' ? '' : tone} ${size} ${text ? '' : 'icon-only'} ${iconEnd && type === 'solid' ? 'has-end' : ''} ${className ?? ''}`
+		`button ${type} ${tone === 'primary' ? '' : tone} ${size} ${text ? '' : 'icon-only'} ${iconEnd && type === 'solid' ? 'has-end' : ''} ${drop && type === 'solid' ? 'drop' : ''} ${className ?? ''}`
 	);
 </script>
 
@@ -176,6 +179,27 @@
 		@include mixins.desktop-hover {
 			background: transparent;
 			color: var(--color-accent-text);
+		}
+	}
+
+	// The fill is a background image that slides up and out of the button on hover (with a rolling label), and back down on leaving. It adds no
+	// layer, so the button keeps whatever position its container gives it.
+	.solid.drop {
+		// Twice the button's height: accent above, empty below. Resting shows the accent half; sliding the image up shows the empty half.
+		--fill: linear-gradient(var(--color-accent) 50%, transparent 50%);
+
+		background: var(--fill) 0 0 / 100% 200% no-repeat;
+
+		@include mixins.mq-motion-allow {
+			transition:
+				background-position 0.5s var(--ease),
+				color var(--duration) var(--ease),
+				border-color var(--duration) var(--ease),
+				scale var(--duration) var(--ease);
+		}
+
+		@include mixins.desktop-hover {
+			background: var(--fill) 0 100% / 100% 200% no-repeat;
 		}
 	}
 
@@ -448,6 +472,13 @@
 	}
 
 	.button.icon-only {
+		aspect-ratio: 1;
 		padding: var(--btn-padding-icon);
+
+		// The roll wraps the icon in inline spans, whose line box is taller than the icon.
+		:global(.roll__front),
+		:global(.roll__back) {
+			display: flex;
+		}
 	}
 </style>

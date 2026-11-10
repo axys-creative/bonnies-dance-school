@@ -21,6 +21,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import type { Attachment } from 'svelte/attachments';
+	import { paperGrain } from '$lib/attachments/paper-grain';
 	import { animate } from '$lib/attachments/animate';
 	import Button from '$lib/components/button.svelte';
 	import Icon from '$lib/components/icon.svelte';
@@ -109,7 +110,11 @@
 
 		<ul class="cards" {@attach !isStatic && desktop ? rise : undefined}>
 			{#each cards.slice(0, 3) as card, index (index)}
-				<li class="card {themes[index]}" {@attach !isStatic && !desktop ? animate() : undefined}>
+				<li
+					class="card {themes[index]}"
+					{@attach paperGrain({ variant: 'flecks' })}
+					{@attach !isStatic && !desktop ? animate() : undefined}
+				>
 					<div class="head">
 						{#if card.icon}<Icon name={card.icon} class="card-icon" />{/if}
 						<Tag text={String(index + 1)} type="outline" class="number" />

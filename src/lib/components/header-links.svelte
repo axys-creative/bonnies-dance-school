@@ -163,6 +163,7 @@
 
 		position: absolute;
 		top: calc(var(--top) + 17px);
+		display: flex;
 
 		@include mixins.left-spacing;
 		translate: 0 -50%;
@@ -175,9 +176,10 @@
 
 	.bar {
 		position: absolute;
-		top: var(--top);
+		top: calc(var(--top) + 17px);
 		display: flex;
 		align-items: center;
+		translate: 0 -50%;
 		pointer-events: auto;
 
 		@include mixins.right-spacing;
@@ -210,7 +212,7 @@
 
 	.skip-link {
 		position: absolute;
-		top: var(--top);
+		top: calc((var(--top) + 17px) * 2 + 8px);
 		width: 1px;
 		height: 1px;
 		overflow: hidden;

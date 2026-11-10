@@ -26,6 +26,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { animate } from '$lib/attachments/animate';
+	import { roll } from '$lib/attachments/roll';
 	import Button from '$lib/components/button.svelte';
 	import SectionCopy from '$lib/components/section-copy.svelte';
 	import TestimonialCard from '$lib/components/testimonial-card.svelte';
@@ -54,12 +55,22 @@
 	function collapse() {
 		inner?.scrollIntoView({ block: 'start' });
 		extra = 0;
+		refocus();
+	}
+
+	// The button is made again when its label changes, so the keyboard keeps its place.
+	async function refocus() {
+		await tick();
+		if (document.activeElement === document.body) {
+			inner?.querySelector<HTMLElement>('.more button')?.focus({ preventScroll: true });
+		}
 	}
 
 	async function more() {
 		const first = shown;
 		extra += pageSize;
 		await tick();
+		refocus();
 		if (isStatic || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
 		// Cards already on screen play their entrance now; the rest wait for the scroll, as the first cards do.
@@ -101,12 +112,15 @@
 
 		{#if testimonials.length > pageSize}
 			<div class="more">
-				<Button
-					text={remaining > 0 ? moreText : lessText}
-					type="solid"
-					iconEnd={remaining > 0 ? 'arrow-down' : 'arrow-up'}
-					onclick={remaining > 0 ? more : collapse}
-				/>
+				{#key remaining > 0}
+					<Button
+						text={remaining > 0 ? moreText : lessText}
+						type="solid"
+						iconEnd={remaining > 0 ? 'arrow-down' : 'arrow-up'}
+						onclick={remaining > 0 ? more : collapse}
+						{@attach roll()}
+					/>
+				{/key}
 			</div>
 		{/if}
 	</div>

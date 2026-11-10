@@ -23,11 +23,13 @@
 </script>
 
 <script lang="ts">
+	import { paperGrain } from '$lib/attachments/paper-grain';
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { onMount, tick } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, slide } from 'svelte/transition';
+	import { roll } from '$lib/attachments/roll';
 	import Button from '$lib/components/button.svelte';
 	import FormChoice from '$lib/components/form-choice.svelte';
 	import FormField from '$lib/components/form-field.svelte';
@@ -136,7 +138,7 @@
 	<div class="inner">
 		<aside class="aside" aria-label="Tuition">
 			{#if tuition?.items.length}
-				<div class="tuition">
+				<div class="tuition" {@attach paperGrain({ variant: 'flecks' })}>
 					<dl>
 						{#each tuition.items as item, index (index)}
 							<div class="fee">
@@ -331,6 +333,8 @@
 										text="Remove student"
 										type="solid"
 										tone="tertiary"
+										drop
+										{@attach roll()}
 										onclick={() => removeLast('students')}
 									/>
 								</div>
@@ -356,6 +360,8 @@
 										text="Remove contact"
 										type="solid"
 										tone="tertiary"
+										drop
+										{@attach roll()}
 										onclick={() => removeLast('contacts')}
 									/>
 								</div>
@@ -375,11 +381,14 @@
 					{#if step > 0}
 						<Button text="Back" type="underline" onclick={() => go(step - 1)} />
 					{/if}
-					<Button
-						text={step < steps.length - 1 ? 'Continue' : submitText}
-						htmlType="submit"
-						iconEnd="arrow-tr"
-					/>
+					{#key step < steps.length - 1}
+						<Button
+							text={step < steps.length - 1 ? 'Continue' : submitText}
+							htmlType="submit"
+							iconEnd="arrow-tr"
+							{@attach roll()}
+						/>
+					{/key}
 				</div>
 			</form>
 		</div>

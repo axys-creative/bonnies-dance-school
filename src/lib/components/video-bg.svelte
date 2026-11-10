@@ -22,6 +22,8 @@
 </script>
 
 <script lang="ts">
+	import { tick } from 'svelte';
+	import { roll } from '$lib/attachments/roll';
 	import { isHls, videoPoster, videoUrl } from '$lib/utils/video-url';
 	import Button from './button.svelte';
 
@@ -43,6 +45,7 @@
 
 	let video = $state<HTMLVideoElement>();
 	let paused = $state(true);
+	let button: HTMLElement | undefined;
 
 	// hls.js goes first: Chrome says "maybe" to native HLS but can't play it, so native playback is the fallback.
 	$effect(() => {
@@ -76,6 +79,13 @@
 		if (pause) video.pause();
 		else video.play().catch(() => {});
 		ontoggle?.(pause);
+		refocus();
+	};
+
+	// The button is made again when its icon changes, so the keyboard keeps its place.
+	const refocus = async () => {
+		await tick();
+		if (document.activeElement === document.body) button?.focus({ preventScroll: true });
 	};
 
 	// Starts it here rather than trusting the `autoplay` attribute, which browsers skip when it is set after the
@@ -104,15 +114,22 @@
 	></video>
 </figure>
 
-<Button
-	class="toggle {placement}"
-	type="solid"
-	tone="tertiary"
-	textDescription="{paused ? 'Play' : 'Pause'} background video"
-	iconStart={paused ? 'play' : 'pause'}
-	onclick={toggle}
-	{@attach toggleAttach}
-/>
+{#key paused}
+	<Button
+		class="toggle {placement}"
+		type="solid"
+		tone="tertiary"
+		drop
+		textDescription="{paused ? 'Play' : 'Pause'} background video"
+		iconStart={paused ? 'play' : 'pause'}
+		onclick={toggle}
+		{@attach roll({ split: 'whole' })}
+		{@attach (el: HTMLElement) => {
+			button = el;
+		}}
+		{@attach toggleAttach}
+	/>
+{/key}
 
 <style lang="scss">
 	@use 'base/mixins';

@@ -27,6 +27,10 @@ export const buttonProps = props(
 	['controls', 'A string, the id of what the button opens (`aria-controls`).'],
 	['iconStart', 'An icon name from `static/icons`, shown before the text.'],
 	['iconEnd', 'An icon name from `static/icons`, shown after the text.'],
+	[
+		'drop',
+		"A boolean. A solid button's fill rolls up out of the top on hover and back down on leaving. Defaults to `false`."
+	],
 	['iconCircle', 'A boolean. Draws a ring around the end icon on hover. Defaults to `false`.'],
 	[
 		'iconEndAttach',
