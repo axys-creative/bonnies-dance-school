@@ -77,10 +77,21 @@
 	let active = $state<number | null>(null);
 	let loaded = $state(false);
 
+	// After it has been open, closing leaves out of the top instead of falling back down.
+	let wasOpen = $state(false);
+
 	$effect(() => {
-		if (open) loaded = true;
-		else active = null;
+		if (open) {
+			loaded = true;
+			wasOpen = true;
+		} else active = null;
 	});
+
+	const ontransitionend = (event: TransitionEvent) => {
+		if (!open && event.target === event.currentTarget && event.propertyName === 'clip-path') {
+			wasOpen = false;
+		}
+	};
 
 	const onclick = (event: MouseEvent) => {
 		if ((event.target as Element).closest('a')) onlink?.();
@@ -106,12 +117,14 @@
 	{id}
 	class="site-nav {variant}"
 	class:open
+	class:closed={!open && wasOpen}
 	class:always
 	class:blur={surface === 'blur'}
 	aria-label="Site navigation"
 	inert={!open}
 	data-lenis-prevent
 	{onclick}
+	{ontransitionend}
 	{@attach surface === 'glass' ? glass({ blur: 16, tint: 'rgb(0 0 0 / 0.6)' }) : undefined}
 >
 	{#if variant === 'slide'}
@@ -522,29 +535,43 @@
 	}
 
 	// The left variant: the background rises from the bottom like the page transition's frame, then the content fades up.
+	// Closing carries on upward and out of the top; once it is out the clip snaps back below, ready to rise again.
 	.left {
 		opacity: 1;
 		clip-path: inset(100% 0 0 0);
-
-		@include mixins.mq-motion-allow {
-			transition:
-				clip-path 0.8s cubic-bezier(0.6, 0, 0.07, 1),
-				visibility 0.8s;
-		}
+		transition: none;
 
 		&.open {
 			clip-path: inset(0);
 		}
+
+		&.closed {
+			clip-path: inset(0 0 100% 0);
+		}
+
+		&.open,
+		&.closed {
+			@include mixins.mq-motion-allow {
+				transition:
+					clip-path 0.8s cubic-bezier(0.6, 0, 0.07, 1),
+					visibility 0.8s;
+			}
+		}
 	}
 
+	// The content comes up from below as the background rises, and leaves upward as it closes.
 	.left .left-wrap {
 		opacity: 0;
 		translate: 0 48px;
+	}
+
+	.left.closed .left-wrap {
+		translate: 0 -48px;
 
 		@include mixins.mq-motion-allow {
 			transition:
 				opacity 0.3s ease,
-				translate 0.3s ease;
+				translate 0.5s cubic-bezier(0.6, 0, 0.07, 1);
 		}
 	}
 
@@ -554,8 +581,8 @@
 
 		@include mixins.mq-motion-allow {
 			transition:
-				opacity 0.6s ease 0.35s,
-				translate 0.8s cubic-bezier(0.6, 0, 0.07, 1) 0.35s;
+				opacity 0.6s ease 0.15s,
+				translate 0.8s cubic-bezier(0.6, 0, 0.07, 1) 0.15s;
 		}
 	}
 

@@ -8,11 +8,13 @@
 	};
 
 	let { name, label, size = 'md', class: className, style, ...rest }: Props = $props();
+
+	const src = $derived(name.startsWith('/') ? name : `/icons/${name}.svg`);
 </script>
 
 <span
 	class="icon {size} {className ?? ''}"
-	style="mask-image: url('{name.startsWith('/') ? name : `/icons/${name}.svg`}'); {style ?? ''}"
+	style="mask-image: url('{src}'); -webkit-mask-image: url('{src}'); {style ?? ''}"
 	role={label ? 'img' : undefined}
 	aria-label={label}
 	aria-hidden={label ? undefined : 'true'}
@@ -28,6 +30,10 @@
 		width: var(--icon-size);
 		height: var(--icon-size);
 		background: currentColor;
+		min-width: var(--icon-size);
+		-webkit-mask-size: contain;
+		-webkit-mask-repeat: no-repeat;
+		-webkit-mask-position: center;
 		mask-size: contain;
 		mask-repeat: no-repeat;
 		mask-position: center;
