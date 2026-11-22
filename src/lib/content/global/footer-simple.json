@@ -26,6 +26,11 @@
 				"newTab": false
 			},
 			{
+				"text": "Join",
+				"url": "/join",
+				"newTab": false
+			},
+			{
 				"text": "Contact",
 				"url": "/contact",
 				"newTab": false
