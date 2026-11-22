@@ -1,10 +1,6 @@
 <script lang="ts">
 	import '../../styles/styles.scss';
 	import AlertStack from '$lib/components/alert-stack.svelte';
-	import FooterGnomon, { type FooterGnomonProps } from '$lib/components/footer-gnomon.svelte';
-	import FooterScrollReveal, {
-		type FooterScrollRevealProps
-	} from '$lib/components/footer-scroll-reveal.svelte';
 	import FooterSimple, { type FooterSimpleProps } from '$lib/components/footer-simple.svelte';
 	import PageTransition from '$lib/components/page-transition.svelte';
 	import ScrollProgress from '$lib/components/scroll-progress.svelte';
@@ -17,8 +13,6 @@
 	import logo from '$lib/content/global/logo.json';
 	import social from '$lib/content/global/social-media.json';
 	import footer from '$lib/content/global/footer-simple.json';
-	import footerGnomon from '$lib/content/global/footer-gnomon.json';
-	import footerScrollReveal from '$lib/content/global/footer-scroll-reveal.json';
 	import site from '$lib/content/meta/site.json';
 	import header from '$lib/content/global/header-simple.json';
 	import headerBasic from '$lib/content/global/header-basic.json';
@@ -73,16 +67,7 @@
 	<main id="main" tabindex="-1">
 		{@render children()}
 	</main>
-	{#if site.footerTemplate === 'gnomon'}
-		<FooterGnomon {...footerGnomon as FooterGnomonProps} socialLinks={social.links} />
-	{:else if site.footerTemplate === 'scroll-reveal'}
-		<FooterScrollReveal
-			{...footerScrollReveal as FooterScrollRevealProps}
-			socialLinks={social.links}
-		/>
-	{:else}
-		<FooterSimple {...footer as FooterSimpleProps} socialLinks={social.links} />
-	{/if}
+	<FooterSimple {...footer as FooterSimpleProps} socialLinks={social.links} />
 </div>
 
 <ScrollProgress />

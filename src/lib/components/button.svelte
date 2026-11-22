@@ -476,6 +476,7 @@
 		min-width: calc(1em + var(--btn-padding-icon) * 2 + 2px);
 		min-height: calc(1em + var(--btn-padding-icon) * 2 + 2px);
 		padding: var(--btn-padding-icon);
+		width: 0;
 
 		// The roll wraps the icon in inline spans, whose line box is taller than the icon.
 		:global(.roll__front),

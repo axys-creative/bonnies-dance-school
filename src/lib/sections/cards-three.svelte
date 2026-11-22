@@ -1,6 +1,6 @@
 <script module lang="ts">
 	export type CardsThreeProps = Pick<SectionCopyProps, 'eyebrowText' | 'eyebrowIcon' | 'title'> & {
-		/** Up to three cards, side by side from `md`. */
+		/** Up to three cards, side by side from `lg`. */
 		cards: {
 			icon?: string;
 			title: string;
@@ -50,7 +50,7 @@
 
 	const themes = ['theme-light', 'theme-dark', 'theme-dark'];
 
-	const query = '(min-width: 768px)';
+	const query = '(min-width: 1024px)';
 	let desktop = $state(browser && matchMedia(query).matches);
 
 	onMount(() => {
@@ -163,8 +163,8 @@
 		padding: 0;
 		list-style: none;
 
-		@include mixins.min-md {
-			grid-template-columns: repeat(3, 1fr);
+		@include mixins.min-lg {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 	}
 
@@ -177,7 +177,7 @@
 		border-radius: var(--radius);
 		background: var(--color-surface);
 
-		@include mixins.min-md {
+		@include mixins.min-lg {
 			min-height: 22rem;
 		}
 

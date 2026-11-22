@@ -42,7 +42,7 @@
 
 		&.split {
 			@include mixins.min-md {
-				grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
+				grid-template-columns: minmax(max-content, 1fr) minmax(0, 44rem);
 				gap: var(--body-padding);
 			}
 		}

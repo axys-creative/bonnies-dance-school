@@ -1369,7 +1369,7 @@ export const cardsThreeProps = props(
 	],
 	[
 		'cards',
-		'An array of up to three `{ icon, title, description, link }`. The title is an H3, the description takes Rich Text tokens, and `link` is `{ text, url, newTab }`, an underline link at the bottom of the card. Side by side from `md`, stacked below. Required.'
+		'An array of up to three `{ icon, title, description, link }`. The title is an H3, the description takes Rich Text tokens, and `link` is `{ text, url, newTab }`, an underline link at the bottom of the card. Side by side from `lg`, stacked below. Required.'
 	],
 	[
 		'fullScreen',

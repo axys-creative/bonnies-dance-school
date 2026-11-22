@@ -19,19 +19,15 @@
 	}
 }
 
-.roll__chars,
 .roll__whole {
 	display: inline-flex;
 	flex-shrink: 0;
 	overflow: hidden;
 }
 
-.roll__chars {
-	white-space: pre;
-}
-
-.roll__space {
-	white-space: pre;
+// Text wraps between words; a word's letters never split.
+.roll__word {
+	display: inline-flex;
 }
 
 // Each piece clips its own copy, so a sideways roll never covers its neighbors.

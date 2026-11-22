@@ -29,7 +29,7 @@
 		gap: 4px;
 		padding: 4px 8px;
 		border: 1px solid var(--color-accent);
-		border-radius: 296px;
+		border-radius: 4px;
 		color: var(--color-accent-text);
 		font-family: var(--font-body);
 		font-size: 14px;

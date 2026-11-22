@@ -88,27 +88,34 @@ export function roll({
 		} else {
 			const text = target.textContent ?? '';
 			const tokens = split === 'words' ? text.split(/(\s+)/) : [...text];
-			const pieces = split === 'words' ? tokens.filter((token) => token.trim()) : tokens;
+			const pieces = tokens.filter((token) => token.trim());
 			const delays = order(pieces.length, from);
 
 			wrapper = document.createElement('span');
 			wrapper.className = 'roll__chars';
 			wrapper.setAttribute('aria-hidden', 'true');
 			let piece = 0;
+			let word: HTMLElement | undefined;
 			for (const token of tokens) {
 				const span = document.createElement('span');
 				span.textContent = token;
-				if (split === 'chars' || token.trim()) {
+				if (token.trim()) {
 					span.className = 'roll__char';
 					span.dataset.char = token;
 					span.style.setProperty('--roll-index', String(delays[piece++] ?? 0));
 					const cell = document.createElement('span');
 					cell.className = 'roll__cell';
 					cell.append(span);
-					wrapper.append(cell);
+					if (!word) {
+						word = document.createElement('span');
+						word.className = 'roll__word';
+						wrapper.append(word);
+					}
+					word.append(cell);
 				} else {
 					span.className = 'roll__space';
 					wrapper.append(span);
+					word = undefined;
 				}
 			}
 

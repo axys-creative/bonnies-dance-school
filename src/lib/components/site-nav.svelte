@@ -202,7 +202,6 @@
 		<div class="left-wrap">
 			<div class="left-links">
 				<MenuLinks
-					class="site-nav-links"
 					{links}
 					label="Primary"
 					direction="column"
@@ -476,16 +475,6 @@
 		align-items: flex-start;
 		justify-content: center;
 		gap: 40px;
-	}
-
-	.site-nav :global(.left-links .site-nav-links) {
-		--btn-font-size: 32px;
-
-		margin-block: 0;
-
-		@include mixins.min-md {
-			--btn-font-size: 40px;
-		}
 	}
 
 	// The link's square sits 17px left of its text; this puts the square on the content edge.

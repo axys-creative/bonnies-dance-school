@@ -215,6 +215,7 @@
 		background: variables.$plum;
 		color: var(--color-text);
 		padding-block: 128px 24px;
+		overflow: hidden;
 
 		@include mixins.min-md {
 			padding-block-start: 48px;
