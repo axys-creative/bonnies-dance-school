@@ -12,7 +12,7 @@ export function textFill({
 	scrub = true,
 	duration = 1,
 	start = scrub ? 'top 90%' : 'top 98%',
-	end = scrub ? 'bottom 60%' : 'bottom 2%',
+	end = scrub ? 'bottom 40%' : 'bottom -18%',
 	...scroll
 }: TextFillOptions = {}): Attachment<HTMLElement> {
 	return (el) => {

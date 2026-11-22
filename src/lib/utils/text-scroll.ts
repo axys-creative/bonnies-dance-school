@@ -9,7 +9,7 @@ export type TextScrollOptions = {
 	scrub?: boolean;
 	/** ScrollTrigger-style start, e.g. `top 98%` (element point, viewport point). */
 	start?: string;
-	/** ScrollTrigger-style end, e.g. `bottom 2%`. */
+	/** ScrollTrigger-style end, e.g. `bottom -18%`. */
 	end?: string;
 	/** Show GSAP's start and end markers for debugging. */
 	markers?: boolean;
@@ -39,7 +39,7 @@ export function textScroll(
 		once = false,
 		scrub = false,
 		start = 'top 98%',
-		end = 'bottom 2%',
+		end = 'bottom -18%',
 		markers = false,
 		trigger
 	}: TextScrollOptions,

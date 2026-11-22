@@ -16,7 +16,7 @@ export type GlitchScrollOptions = {
 	trigger?: string | Element;
 	/** ScrollTrigger-style start, e.g. `top 98%` (element point, viewport point). */
 	start?: string;
-	/** ScrollTrigger-style end, e.g. `bottom 2%`. */
+	/** ScrollTrigger-style end, e.g. `bottom -18%`. */
 	end?: string;
 	/** Use the mono-spaced font so the width changes less while scrambling. */
 	mono?: boolean;
@@ -30,7 +30,7 @@ export function glitchScroll({
 	once = false,
 	trigger,
 	start = 'top 98%',
-	end = 'bottom 2%',
+	end = 'bottom -18%',
 	mono = true
 }: GlitchScrollOptions = {}): Attachment<HTMLElement> {
 	return (el) => {
@@ -44,7 +44,7 @@ export function glitchScroll({
 
 		const stopWatching = onScrollZone(watched, {
 			start: parseScrollPoint(start, 'top 98%'),
-			end: parseScrollPoint(end, 'bottom 2%'),
+			end: parseScrollPoint(end, 'bottom -18%'),
 			onEnter() {
 				el.textContent = original;
 				scrambleTo(el, original, { chars, duration, revealDelay });

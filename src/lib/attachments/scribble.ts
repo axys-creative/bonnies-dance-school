@@ -34,7 +34,7 @@ export type ScribbleOptions = {
 	once?: boolean;
 	/** For `scroll`: a ScrollTrigger-style start, e.g. `top 85%` (element point, viewport point). */
 	start?: string;
-	/** For `scroll`: a ScrollTrigger-style end, e.g. `bottom 2%`. With `once: false` the scribble resets past it. */
+	/** For `scroll`: a ScrollTrigger-style end, e.g. `bottom -18%`. With `once: false` the scribble resets past it. */
 	end?: string;
 	/** For `scroll`: show GSAP's start and end markers for debugging. */
 	markers?: boolean;
@@ -62,7 +62,7 @@ export function scribble({
 	scroll = false,
 	once = true,
 	start = 'top 85%',
-	end = 'bottom 2%',
+	end = 'bottom -18%',
 	markers = false,
 	trigger
 }: ScribbleOptions = {}): Attachment<HTMLElement> {

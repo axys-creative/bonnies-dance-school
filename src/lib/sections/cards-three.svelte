@@ -24,7 +24,7 @@
 	import { paperGrain } from '$lib/attachments/paper-grain';
 	import { animate } from '$lib/attachments/animate';
 	import Button from '$lib/components/button.svelte';
-	import Icon from '$lib/components/icon.svelte';
+	import IconDraw from '$lib/components/icon-draw.svelte';
 	import RichText from '$lib/components/rich-text.svelte';
 	import Tag from '$lib/components/tag.svelte';
 	import SectionCopy, { type SectionCopyProps } from '$lib/components/section-copy.svelte';
@@ -79,7 +79,7 @@
 							trigger: el,
 							start: () => `top ${innerHeight * 0.9 - index * startSpread}px`,
 							end: () => {
-								const offset = shift - innerHeight * lift;
+								const offset = shift - innerHeight * (lift - 0.3);
 								return `bottom center${offset >= 0 ? '+=' : '-='}${Math.abs(offset)}`;
 							},
 							invalidateOnRefresh: true,
@@ -116,7 +116,12 @@
 					{@attach !isStatic && !desktop ? animate() : undefined}
 				>
 					<div class="head">
-						{#if card.icon}<Icon name={card.icon} class="card-icon" />{/if}
+						{#if card.icon}<IconDraw
+								name={card.icon}
+								still={isStatic}
+								options={{ delay: index * 1000 }}
+								class="card-icon"
+							/>{/if}
 						<Tag text={String(index + 1)} type="outline" class="number" />
 					</div>
 					<h3 class="h5">{card.title}</h3>

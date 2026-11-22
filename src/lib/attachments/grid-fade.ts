@@ -17,7 +17,7 @@ export type GridFadeOptions = {
 	duration?: number;
 	/** ScrollTrigger-style start, e.g. `top 96%` (element point, viewport point). */
 	start?: string;
-	/** ScrollTrigger-style end, e.g. `center 75%`. */
+	/** ScrollTrigger-style end, e.g. `center 55%`. */
 	end?: string;
 };
 
@@ -29,12 +29,12 @@ const TILE_SIZES = {
 
 const RANGES = {
 	scrub: {
-		in: { start: 'top 96%', end: 'center 75%' },
-		'in-out': { start: 'top 96%', end: 'bottom 4%' }
+		in: { start: 'top 96%', end: 'center 55%' },
+		'in-out': { start: 'top 96%', end: 'bottom -16%' }
 	},
 	play: {
-		in: { start: 'top 96%', end: 'bottom 4%' },
-		'in-out': { start: 'top 60%', end: 'bottom 4%' }
+		in: { start: 'top 96%', end: 'bottom -16%' },
+		'in-out': { start: 'top 60%', end: 'bottom -16%' }
 	}
 };
 

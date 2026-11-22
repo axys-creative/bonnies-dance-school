@@ -229,6 +229,7 @@
 					<FormField
 						variant="solid"
 						name="guardian-name"
+						required
 						label="Name(s)"
 						autocomplete="name"
 						error={errors['guardian-name']}
@@ -236,6 +237,7 @@
 					<FormField
 						variant="solid"
 						name="guardian-phone"
+						required
 						label="Phone"
 						type="tel"
 						inputmode="numeric"
@@ -252,6 +254,7 @@
 					<FormField
 						variant="solid"
 						name="guardian-email"
+						required
 						label="Email"
 						type="email"
 						autocomplete="email"
@@ -298,6 +301,7 @@
 					<FormField
 						variant="solid"
 						name="signature"
+						required
 						label="Signature (type your full name)"
 						autocomplete="name"
 						error={errors['signature']}
@@ -306,6 +310,7 @@
 						<FormField
 							variant="solid"
 							name="printed-name"
+							required
 							label="Print name"
 							autocomplete="name"
 							error={errors['printed-name']}

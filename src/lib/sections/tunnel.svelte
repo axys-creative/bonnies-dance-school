@@ -173,7 +173,7 @@
 
 	{#if message}
 		<div class="message-box">
-			<p class="message" {@attach textFill({ end: 'bottom 80%' })}>{message}</p>
+			<p class="message" {@attach textFill({ end: 'bottom 60%' })}>{message}</p>
 		</div>
 	{/if}
 </section>

@@ -147,7 +147,7 @@
 		justify-content: space-between;
 		gap: 24px;
 		width: 100%;
-		padding: 12px 0;
+		padding: 18px 0;
 		border: 0;
 		background: none;
 		color: inherit;
@@ -223,11 +223,12 @@
 		&:not([inert]) {
 			grid-template-rows: 1fr;
 			visibility: visible;
-			padding-block-end: 12px;
+			padding-block-end: 18px;
 		}
 	}
 
 	.inner {
+		@include mixins.body-small;
 		overflow: hidden;
 	}
 </style>

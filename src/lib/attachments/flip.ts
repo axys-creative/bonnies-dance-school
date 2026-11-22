@@ -11,7 +11,7 @@ export type FlipOptions = {
 	trigger?: string | Element;
 	/** ScrollTrigger-style start, e.g. `top 98%` (element point, viewport point). */
 	start?: string;
-	/** ScrollTrigger-style end, e.g. `bottom top`. */
+	/** ScrollTrigger-style end, e.g. `bottom -20%`. */
 	end?: string;
 	/** Tie the tilt to scroll position instead of playing the swing when it comes into view. */
 	scrub?: boolean;
@@ -27,7 +27,7 @@ export function flip({
 	from = 'top',
 	trigger,
 	start = 'top 98%',
-	end = 'bottom top',
+	end = 'bottom -20%',
 	scrub = false,
 	ease = 'none',
 	once = false
@@ -37,7 +37,7 @@ export function flip({
 
 		const watched = (typeof trigger === 'string' ? document.querySelector(trigger) : trigger) ?? el;
 		const startPoint = parseScrollPoint(start, 'top 98%');
-		const endPoint = parseScrollPoint(end, 'bottom top');
+		const endPoint = parseScrollPoint(end, 'bottom -20%');
 		const easeProgress = typeof ease === 'function' ? ease : parseGsapEase(ease);
 
 		el.classList.add('flip');
