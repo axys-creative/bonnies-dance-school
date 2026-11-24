@@ -10,15 +10,25 @@ export type RollOptions = {
 	direction?: 'up' | 'down' | 'left' | 'right';
 	/** `false` never rolls back: each time the pointer or focus arrives it rolls on to the next copy, always the same way. */
 	rewind?: boolean;
-	/** Seconds between each piece starting to roll. */
+	/** Seconds between each piece starting to roll. Longer text rolls faster by default (see `roll.scss`). */
 	stagger?: number;
 	/** Seconds to wait before the first piece starts rolling, e.g. for a background to arrive first. */
 	delay?: number;
-	/** Seconds each piece takes to roll. */
+	/** Seconds each piece takes to roll. Longer text rolls faster by default. */
 	duration?: number;
 	/** The element that holds the content: a selector inside, or an element. Defaults to a `.label` (as in Button), else the element itself. */
 	target?: string | HTMLElement;
 };
+
+const LONG = 12;
+const LONGEST = 30;
+
+// Mirrors the tiers in `roll.scss`, for the scripted roll.
+const TIERS = [
+	{ stagger: 0.02, duration: 0.6 },
+	{ stagger: 0.012, duration: 0.5 },
+	{ stagger: 0.006, duration: 0.4 }
+];
 
 /** Where in the order a piece rolls, for each of `count` pieces. */
 function order(count: number, from: NonNullable<RollOptions['from']>) {
@@ -49,9 +59,9 @@ export function roll({
 	from = 'start',
 	direction = 'up',
 	rewind = true,
-	stagger = 0.02,
+	stagger,
 	delay = 0,
-	duration = 0.6,
+	duration,
 	target: targetOption
 }: RollOptions = {}): Attachment<HTMLElement> {
 	return (el) => {
@@ -66,6 +76,7 @@ export function roll({
 		const original = Array.from(target.childNodes);
 
 		let wrapper: HTMLElement;
+		let tier = 0;
 		if (split === 'whole') {
 			const slide = document.createElement('span');
 			slide.className = 'roll__slide';
@@ -87,6 +98,8 @@ export function roll({
 			target.replaceChildren(wrapper);
 		} else {
 			const text = target.textContent ?? '';
+			const length = [...text].length;
+			tier = length > LONGEST ? 2 : length > LONG ? 1 : 0;
 			const tokens = split === 'words' ? text.split(/(\s+)/) : [...text];
 			const pieces = tokens.filter((token) => token.trim());
 			const delays = order(pieces.length, from);
@@ -127,9 +140,12 @@ export function roll({
 
 		const modifiers = ['roll', `roll--${split}`, `roll--${direction}`];
 		if (!rewind) modifiers.push('roll--forward');
+		if (tier) modifiers.push(tier === 2 ? 'roll--longest' : 'roll--long');
+		const rollStagger = stagger ?? TIERS[tier].stagger;
+		const rollDuration = duration ?? TIERS[tier].duration;
 		el.classList.add(...modifiers);
-		el.style.setProperty('--roll-stagger', `${stagger}s`);
-		el.style.setProperty('--roll-duration', `${duration}s`);
+		if (stagger !== undefined) el.style.setProperty('--roll-stagger', `${stagger}s`);
+		if (duration !== undefined) el.style.setProperty('--roll-duration', `${duration}s`);
 		el.style.setProperty('--roll-delay', `${delay}s`);
 
 		// The copy is identical, so when a roll ends and the piece snaps back to rest nothing seems to change.
@@ -153,9 +169,9 @@ export function roll({
 				...wrapper.querySelectorAll<HTMLElement>('.roll__char, .roll__slide')
 			].map((node) =>
 				node.animate([{ translate: '0% 0%' }, { translate: way }], {
-					duration: duration * 1000,
+					duration: rollDuration * 1000,
 					delay:
-						(delay + Number(node.style.getPropertyValue('--roll-index') || 0) * stagger) * 1000,
+						(delay + Number(node.style.getPropertyValue('--roll-index') || 0) * rollStagger) * 1000,
 					easing,
 					fill: 'backwards'
 				})

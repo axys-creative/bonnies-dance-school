@@ -280,7 +280,7 @@
 
 	.wordmark {
 		grid-row: 3;
-		padding-block: 16px 48px;
+		padding-block: 48px;
 
 		@include mixins.min-lg {
 			padding-block-start: 120px;
@@ -308,6 +308,14 @@
 		@include mixins.min-md {
 			flex-direction: row;
 			align-items: center;
+		}
+	}
+
+	.copyright {
+		order: 1;
+
+		@include mixins.min-md {
+			order: 0;
 		}
 	}
 

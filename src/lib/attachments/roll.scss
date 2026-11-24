@@ -50,6 +50,17 @@
 	}
 }
 
+// Longer text rolls faster so it does not take long to finish.
+.roll--long {
+	--roll-stagger: 0.012s;
+	--roll-duration: 0.5s;
+}
+
+.roll--longest {
+	--roll-stagger: 0.006s;
+	--roll-duration: 0.4s;
+}
+
 .roll__slide {
 	position: relative;
 	display: inline-flex;
